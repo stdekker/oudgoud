@@ -7,7 +7,7 @@ get_header(); ?>
 <section id="primary">
 
 				<h1 class="archive-title"><?php
-					printf( __( '%s archief', 'haven308' ), '' . single_cat_title( '', false ) . '' );
+					printf( __( '%s archief', 'oudgoud' ), '' . single_cat_title( '', false ) . '' );
 				?></h1>
 	<section id="archive" class="post-grid">
 					<?php

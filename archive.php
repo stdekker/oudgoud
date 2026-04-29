@@ -8,7 +8,7 @@
  * Learn more: http://codex.wordpress.org/Template_Hierarchy
  *
  * @package WordPress
- * @subpackage Haven308
+ * @subpackage Oudgoud
  */
 
 get_header(); ?>
@@ -25,13 +25,13 @@ get_header(); ?>
 ?>
 					<h1 class="page-title"><?php
 						if ( is_day() ) :
-							printf( __( 'Daily Archives: %s', 'haven308' ), get_the_date() );
+							printf( __( 'Daily Archives: %s', 'oudgoud' ), get_the_date() );
 						elseif ( is_month() ) :
-							printf( __( 'Monthly Archives: %s', 'haven308' ), get_the_date('F Y') );
+							printf( __( 'Monthly Archives: %s', 'oudgoud' ), get_the_date('F Y') );
 						elseif ( is_year() ) :
-							printf( __( 'Yearly Archives: %s', 'haven308' ), get_the_date('Y') );
+							printf( __( 'Yearly Archives: %s', 'oudgoud' ), get_the_date('Y') );
 						else :
-							_e( 'Blog Archives', 'haven308' );
+							_e( 'Blog Archives', 'oudgoud' );
 						endif;
 					?></h1>
 <?php
@@ -66,7 +66,7 @@ get_header(); ?>
 				</li>
 			<?php endwhile; ?>
 		<?php else : ?>
-			<li><?php esc_html_e( 'No posts found for this date archive.', 'haven308' ); ?></li>
+			<li><?php esc_html_e( 'No posts found for this date archive.', 'oudgoud' ); ?></li>
 		<?php endif; ?>
 		</ul>
 		<?php

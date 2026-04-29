@@ -3,22 +3,22 @@
  * The template for displaying attachments.
  *
  * @package WordPress
- * @subpackage Haven308
+ * @subpackage Oudgoud
  */
 
 get_header(); ?>
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 				<?php if ( ! empty( $post->post_parent ) ) : ?>
-					<p class="page-title"><a href="<?php echo esc_url( get_permalink( $post->post_parent ) ); ?>" title="<?php echo esc_attr( sprintf( __( 'Return to %s', 'haven308' ), get_the_title( $post->post_parent ) ) ); ?>" rel="gallery"><?php
+					<p class="page-title"><a href="<?php echo esc_url( get_permalink( $post->post_parent ) ); ?>" title="<?php echo esc_attr( sprintf( __( 'Return to %s', 'oudgoud' ), get_the_title( $post->post_parent ) ) ); ?>" rel="gallery"><?php
 						/* translators: %s - title of parent post */
-						printf( __( '<span class="meta-nav">&larr;</span> %s', 'haven308' ), get_the_title( $post->post_parent ) );
+						printf( __( '<span class="meta-nav">&larr;</span> %s', 'oudgoud' ), get_the_title( $post->post_parent ) );
 					?></a></p>
 				<?php endif; ?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 					<h2 class="entry-title"><?php the_title(); ?></h2>
 					<div class="entry-meta">
 						<?php
-							printf( __('Published %2$s', 'haven308'),
+							printf( __('Published %2$s', 'oudgoud'),
 								'meta-prep meta-prep-entry-date',
 								sprintf( '<abbr title="%1$s">%2$s</abbr>',
 									esc_attr( get_the_time() ),
@@ -28,17 +28,17 @@ get_header(); ?>
 							if ( wp_attachment_is_image() ) {
 								echo ' | ';
 								$metadata = wp_get_attachment_metadata();
-								printf( __( 'Full size is %s pixels', 'haven308'),
+								printf( __( 'Full size is %s pixels', 'oudgoud'),
 									sprintf( '<a href="%1$s" title="%2$s">%3$s &times; %4$s</a>',
 										esc_url( wp_get_attachment_url() ),
-										esc_attr( __('Link to full-size image', 'haven308') ),
+										esc_attr( __('Link to full-size image', 'oudgoud') ),
 										$metadata['width'],
 										$metadata['height']
 									)
 								);
 							}
 						?>
-						<?php edit_post_link( __( 'Edit', 'haven308' ), '', '' ); ?>
+						<?php edit_post_link( __( 'Edit', 'oudgoud' ), '', '' ); ?>
 					</div><!-- .entry-meta -->
 					<div class="entry-content">
 						<div class="entry-attachment">
@@ -63,7 +63,7 @@ get_header(); ?>
 	}
 ?>
 							<p><a href="<?php echo esc_url( $next_attachment_url ); ?>" title="<?php echo esc_attr( get_the_title() ); ?>" rel="attachment"><?php
-								$attachment_size = apply_filters( 'haven308_attachment_size', 900 );
+								$attachment_size = apply_filters( 'oudgoud_attachment_size', 900 );
 								echo wp_get_attachment_image( $post->ID, array( $attachment_size, 9999 ) ); // filterable image width with, essentially, no limit for image height.
 							?></a></p>
 							<nav id="nav-below" class="navigation">
@@ -75,11 +75,11 @@ get_header(); ?>
 <?php endif; ?>
 						</div><!-- .entry-attachment -->
 						<div class="entry-caption"><?php if ( !empty( $post->post_excerpt ) ) the_excerpt(); ?></div>
-<?php the_content( __( 'Continue reading &rarr;', 'haven308' ) ); ?>
-<?php wp_link_pages( array( 'before' => '' . __( 'Pages:', 'haven308' ), 'after' => '' ) ); ?>
+<?php the_content( __( 'Continue reading &rarr;', 'oudgoud' ) ); ?>
+<?php wp_link_pages( array( 'before' => '' . __( 'Pages:', 'oudgoud' ), 'after' => '' ) ); ?>
 						<footer class="entry-utility">
 							<?php haven_posted_in(); ?>
-							<?php edit_post_link( __( 'Edit', 'haven308' ), ' <span class="edit-link">', '</span>' ); ?>
+							<?php edit_post_link( __( 'Edit', 'oudgoud' ), ' <span class="edit-link">', '</span>' ); ?>
 						</footer><!-- .entry-utility -->
 <?php comments_template(); ?>
 					</div><!-- .entry-content -->

@@ -3,13 +3,13 @@
  * The template for displaying Tag Archive pages.
  *
  * @package WordPress
- * @subpackage Haven308
+ * @subpackage Oudgoud
  */
 
 get_header(); ?>
 
 				<h1><?php
-					printf( __( 'Tag Archives: %s', 'haven308' ), single_tag_title( '', false ) );
+					printf( __( 'Tag Archives: %s', 'oudgoud' ), single_tag_title( '', false ) );
 				?></h1>
 
 <?php

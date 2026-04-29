@@ -1,6 +1,6 @@
 <?php
 /**
- * Haven308 theme functions
+ * Oudgoud theme functions
  * Theme setup and helper functions.
  */ 
  
@@ -28,7 +28,7 @@ function haven_setup() {
 	add_editor_style();
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'title-tag' );
-	load_theme_textdomain( 'haven308', get_template_directory() . '/languages' );
+	load_theme_textdomain( 'oudgoud', get_template_directory() . '/languages' );
 
 	$locale = get_locale();
 	$locale_file = get_template_directory() . "/languages/$locale.php";
@@ -36,8 +36,8 @@ function haven_setup() {
 		require_once( $locale_file );
 
 	register_nav_menus( array(
-		'primary' => __( 'Primary Navigation','haven308' ),
-                'footer' => __( 'Footer Navigation','haven308' ),
+		'primary' => __( 'Primary Navigation','oudgoud' ),
+                'footer' => __( 'Footer Navigation','oudgoud' ),
 	));
 	
 	add_image_size( 'featured-full', 678, 9999 );
@@ -91,7 +91,7 @@ add_filter( 'excerpt_length', 'haven_excerpt_length' );
  */
  
 function haven_continue_reading_link() {
-	return ' <a href="' . esc_url( get_permalink() ) . '" class="more-link">' . __( '&rsaquo; Meer', 'haven308' ) . '</a>';
+	return ' <a href="' . esc_url( get_permalink() ) . '" class="more-link">' . __( '&rsaquo; Meer', 'oudgoud' ) . '</a>';
 }
 
 /**
@@ -125,17 +125,17 @@ function haven_comment( $comment, $args, $depth ) {
 					<time datetime="<?php comment_time( 'c' ); ?>">
 						<?php
 						/* translators: 1: date, 2: time */
-						printf( __( '%1$s om %2$s', 'haven308' ), get_comment_date(), get_comment_time() );
+						printf( __( '%1$s om %2$s', 'oudgoud' ), get_comment_date(), get_comment_time() );
 						?>
 					</time>
 				</a>
-				<?php edit_comment_link( __( 'Edit', 'haven308' ), '<span class="edit-link">', '</span>' ); ?>
+				<?php edit_comment_link( __( 'Edit', 'oudgoud' ), '<span class="edit-link">', '</span>' ); ?>
 				<span class="reply-link">
 					<?php comment_reply_link( array_merge( $args, array( 'depth' => $depth, 'max_depth' => $args['max_depth'] ) ) ); ?>
 				</span>
 			</header>
 			<?php if ( $comment->comment_approved == '0' ) : ?>
-				<em class="comment-awaiting-moderation"><?php esc_html_e( 'Je bericht moet nog worden goedgekeurd.', 'haven308' ); ?></em>
+				<em class="comment-awaiting-moderation"><?php esc_html_e( 'Je bericht moet nog worden goedgekeurd.', 'oudgoud' ); ?></em>
 			<?php endif; ?>
 			<div class="comment-body"><?php comment_text(); ?></div>
 		</article><!-- #comment-##  -->
@@ -145,7 +145,7 @@ function haven_comment( $comment, $args, $depth ) {
 		case 'trackback' :
 	?>
 	<li class="post pingback">
-		<p><?php _e( 'Pingback:', 'haven308' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'haven308'), ' ' ); ?></p>
+		<p><?php _e( 'Pingback:', 'oudgoud' ); ?> <?php comment_author_link(); ?><?php edit_comment_link( __('(Edit)', 'oudgoud'), ' ' ); ?></p>
 	<?php
 			break;
 	endswitch;
@@ -159,9 +159,9 @@ endif;
 function haven_widgets_init() {
 	// Area 1, located at the top of the sidebar.
 	register_sidebar( array(
-		'name' => __( 'Primary Widget Area', 'haven308' ),
+		'name' => __( 'Primary Widget Area', 'oudgoud' ),
 		'id' => 'primary-widget-area',
-		'description' => __( 'The primary widget area', 'haven308' ),
+		'description' => __( 'The primary widget area', 'oudgoud' ),
 		'before_widget' => '<div id="%1$s" class="widget-container %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h2 class="widget-title">',
@@ -170,9 +170,9 @@ function haven_widgets_init() {
 
 	// Area 2, located below the Primary Widget Area in the sidebar. Empty by default.
 	register_sidebar( array(
-		'name' => __( 'Secondary Widget Area', 'haven308' ),
+		'name' => __( 'Secondary Widget Area', 'oudgoud' ),
 		'id' => 'secondary-widget-area',
-		'description' => __( 'The secondary widget area', 'haven308' ),
+		'description' => __( 'The secondary widget area', 'oudgoud' ),
 		'before_widget' => '<div id="%1$s" class="widget-container %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h2 class="widget-title">',
@@ -194,7 +194,7 @@ function haven_posted_on() {
 	// m = 01–12
 	// j = 1–31
 	// d = 01–31
-	printf( __( '<time>%3$s %2$s %4$s</time>', 'haven308' ),
+	printf( __( '<time>%3$s %2$s %4$s</time>', 'oudgoud' ),
 		// %1$s = container class
 		'meta-prep meta-prep-author',
 		// %2$s = month: /yyyy/mm/
@@ -228,11 +228,11 @@ function haven_posted_in() {
 	// Retrieves tag list of current post, separated by commas.
 	$tag_list = get_the_tag_list( '', ', ' );
 	if ( $tag_list ) {
-		$posted_in = __( 'This entry was posted in %1$s and tagged %2$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'haven308' );
+		$posted_in = __( 'This entry was posted in %1$s and tagged %2$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'oudgoud' );
 	} elseif ( is_object_in_taxonomy( get_post_type(), 'category' ) ) {
-		$posted_in = __( 'This entry was posted in %1$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'haven308' );
+		$posted_in = __( 'This entry was posted in %1$s. Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'oudgoud' );
 	} else {
-		$posted_in = __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'haven308' );
+		$posted_in = __( 'Bookmark the <a href="%3$s" title="Permalink to %4$s" rel="bookmark">permalink</a>.', 'oudgoud' );
 	}
 	
 	// Prints the string, replacing the placeholders.
@@ -249,9 +249,9 @@ endif;
 // change Search Form input type from "text" to "search" and add placeholder text
 	function haven_search_form ( $form ) {
 		$form = '<form role="search" method="get" id="searchform" action="' . esc_url( home_url( '/' ) ) . '" >
-		<div><label class="screen-reader-text" for="s">' . esc_html__( 'Search for:', 'haven308' ) . '</label>
-		<input type="search" placeholder="' . esc_attr__( 'Search for...', 'haven308' ) . '" value="' . esc_attr( get_search_query() ) . '" name="s" id="s" />
-		<input type="submit" id="searchsubmit" value="'. esc_attr__( 'Search', 'haven308' ) .'" />
+		<div><label class="screen-reader-text" for="s">' . esc_html__( 'Search for:', 'oudgoud' ) . '</label>
+		<input type="search" placeholder="' . esc_attr__( 'Search for...', 'oudgoud' ) . '" value="' . esc_attr( get_search_query() ) . '" name="s" id="s" />
+		<input type="submit" id="searchsubmit" value="'. esc_attr__( 'Search', 'oudgoud' ) .'" />
 		</div>
 		</form>';
 		return $form;
@@ -283,7 +283,7 @@ function haven_page_nav($id=null) {
 function haven_render_news_article( $post, $format = 'full' ) { ?>
 	<article <?php post_class( 'news-' . $format ); ?>>
 		<header>
-			<h1 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'haven308' ), the_title_attribute( array( 'echo' => false ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
+			<h1 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'oudgoud' ), the_title_attribute( array( 'echo' => false ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
 		</header>
 
 		<section class="entry-meta"><time><?php the_time( "j F `y" ); ?></time></section>

@@ -3,13 +3,13 @@
  * The template for displaying Search Results pages.
  *
  * @package WordPress
- * @subpackage Haven308
+ * @subpackage Oudgoud
  */
 
 get_header(); ?>
 <section id="primary">
 	<?php if ( have_posts() ) : ?>
-					<h1><?php printf( __( 'Zoekresultaten voor: %s', 'haven308' ), esc_html( get_search_query() ) ); ?></h1>
+					<h1><?php printf( __( 'Zoekresultaten voor: %s', 'oudgoud' ), esc_html( get_search_query() ) ); ?></h1>
 					<?php get_template_part( 'loop', 'search' ); ?>
 	<?php else : ?>
 						<h1>Pagina niet gevonden</h1>

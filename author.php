@@ -3,7 +3,7 @@
  * The template for displaying Author Archive pages.
  *
  * @package WordPress
- * @subpackage Haven308
+ * @subpackage Oudgoud
  */
 
 get_header(); ?>
@@ -20,14 +20,14 @@ get_header(); ?>
 		the_post();
 ?>
 
-				<h1><?php printf( __( 'Author Archives: %s', 'haven308' ), "<a class='url fn n' href='" . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . "' title='" . esc_attr( get_the_author() ) . "' rel='me'>" . esc_html( get_the_author() ) . "</a>" ); ?></h1>
+				<h1><?php printf( __( 'Author Archives: %s', 'oudgoud' ), "<a class='url fn n' href='" . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . "' title='" . esc_attr( get_the_author() ) . "' rel='me'>" . esc_html( get_the_author() ) . "</a>" ); ?></h1>
 
 <?php
 // If a user has filled out their description, show a bio on their entries.
 if ( get_the_author_meta( 'description' ) ) : ?>
 
-							<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'haven308_author_bio_avatar_size', 60 ) ); ?>
-							<h2><?php printf( __( 'About %s', 'haven308' ), get_the_author() ); ?></h2>
+							<?php echo get_avatar( get_the_author_meta( 'user_email' ), apply_filters( 'oudgoud_author_bio_avatar_size', 60 ) ); ?>
+							<h2><?php printf( __( 'About %s', 'oudgoud' ), get_the_author() ); ?></h2>
 							<?php the_author_meta( 'description' ); ?>
 
 <?php endif; ?>

@@ -16,8 +16,8 @@ get_header(); ?>
 				<?php } ?>
 					<div class="entry-content">
 						<?php the_content(); ?>
-						<?php wp_link_pages( array( 'before' => '' . __( 'Pages:', 'haven308' ), 'after' => '' ) ); ?>
-						<?php edit_post_link( __( 'Edit', 'haven308' ), '', '' ); ?>
+						<?php wp_link_pages( array( 'before' => '' . __( 'Pages:', 'oudgoud' ), 'after' => '' ) ); ?>
+						<?php edit_post_link( __( 'Edit', 'oudgoud' ), '', '' ); ?>
 					</div><!-- .entry-content -->
 				</article><!-- #post-## -->
 <?php endwhile; ?>

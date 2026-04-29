@@ -8,7 +8,7 @@ get_header(); ?>
 	<section id="primary" class="agenda">
 		<article id="post-0" class="post no-results not-found">
 			<div class="entry-content">
-				<p><?php esc_html_e( 'De agenda is tijdelijk niet beschikbaar.', 'haven308' ); ?></p>
+				<p><?php esc_html_e( 'De agenda is tijdelijk niet beschikbaar.', 'oudgoud' ); ?></p>
 			</div>
 		</article>
 	</section>

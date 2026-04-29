@@ -3,13 +3,13 @@
  * The template for displaying 404 pages (Not Found).
  *
  * @package WordPress
- * @subpackage Haven308
+ * @subpackage Oudgoud
  */
 
 get_header(); ?>
 			<article id="post-0" class="post error404 not-found" role="main">
-				<h1><?php _e( 'Not Found', 'haven308' ); ?></h1>
-				<p><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'haven308' ); ?></p>
+				<h1><?php _e( 'Not Found', 'oudgoud' ); ?></h1>
+				<p><?php _e( 'Apologies, but the page you requested could not be found. Perhaps searching will help.', 'oudgoud' ); ?></p>
 				<?php get_search_form(); ?>
 				<script>
 					// focus on search field after it has loaded
