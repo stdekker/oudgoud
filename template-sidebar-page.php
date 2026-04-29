@@ -6,7 +6,8 @@
 
 get_header(); ?>
 
-<section id="primary" class="sidebar">
+<div class="main-layout main-layout--sidebar">
+<section id="primary">
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 				<?php if ( is_front_page() ) { ?>
@@ -22,7 +23,9 @@ get_header(); ?>
 <?php endwhile; ?>
 </section>
 
-<?php 
-		get_sidebar();
-		get_footer(); 
+<?php get_sidebar(); ?>
+</div>
+
+<?php
+get_footer();
 ?>

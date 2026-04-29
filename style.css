@@ -49,27 +49,17 @@ html {
 html, button, input, select, textarea {
 	font-family: sans-serif;
 	color: rgb(85, 85, 85);
+	background: #DFB248;
 }
 
 body {
 	margin: 0;
-	font-size: 1em;
+	padding: 0;
+	font-size: clamp(1rem, 2vw, 1.125rem);
 	line-height: 1.4;
-	background: #DFB248;
+	background: #FFF9DE;
 	color: #333;
-	font-family: Georgia, Times, 'Arial', Serif;
-}
-
-::-moz-selection {
-	background: #ff0;
-	color: #333;
-	text-shadow: none;
-}
-
-::selection {
-	background: #ff0;
-	color: #333;
-	text-shadow: none;
+	font-family: sans-serif;
 }
 
 /*= Links
@@ -241,8 +231,7 @@ button, input {
 
 button, input[type="button"], input[type="reset"], input[type="submit"] {
 	cursor: pointer;
-	-webkit-appearance: button;
-	*overflow: visible;
+	appearance: button;
 }
 
 button[disabled], input[disabled] {
@@ -252,8 +241,9 @@ button[disabled], input[disabled] {
 input[type="checkbox"], input[type="radio"] {
 	box-sizing: border-box;
 	padding: 0;
-	*width: 13px;
-	*height: 13px;
+	accent-color: #d91e26; /* Optional: Brand accent color, supported in modern browsers */
+	width: 1.1em;
+	height: 1.1em;
 }
 
 input[type="search"] {
@@ -306,41 +296,22 @@ td {
 	padding: 1em;
 }
 
-/*===[ Primary styles - 320 and up 
-]==============================================================================
-  
-    Author: Stijn Dekker
-   
-	We are building this site '320 and up'. so basic styles should fit small mobile devices.
-	
-==================================================================================================================*/
-
 /* Basic structure */ 
+
 #site-header {
-	background: #FFF9DE;
-	overflow: hidden;
+	background: transparent url(images/border-stitched.png) repeat-x bottom;
+	padding-bottom: 2px;
+	margin-bottom: 1rem;
 }
 
 #branding {
-	width: 320px;
 	margin: .9em auto;
 }
 
-#access {
+#main-navigation {
 	margin: 0 auto;
 	border-bottom: 1px dashed #DFB248;
 	border-top: 1px dashed #DFB248;
-}
-
-#filler {
-	background: #FFF9DE;
-	overflow: hidden;
-	padding-bottom: 3.6em;
-}
-
-#positioning {
-	margin: 0 auto;
-	padding: 1.5rem;
 }
 
 #primary {
@@ -349,14 +320,29 @@ td {
 	margin: 0 auto;
 }
 
-#secondary {
+#secondary,
+#sidebar {
 	overflow: hidden;
+}
+
+.main-layout--sidebar {
+	box-sizing: border-box;
+	width: 100%;
+	max-width: 958px;
+	margin: 0 auto;
+	overflow: hidden;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+	.main-layout--sidebar {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
 }
 
 #site-logo {
 	background: url(images/logo/groep_320.png) no-repeat;
 	height: 71px;
-	width: 320px;
 	max-width: 100%;
 	background-size: contain;
 	margin: 0 auto;
@@ -373,19 +359,17 @@ td {
 	display: none;
 }
 
-article {
-	line-height: 1.6;
-	/* font-size: .98em; */
-}
-
 #skip {
 	display: none;
 }
 
 #site-footer {
+	background: #DFB248;
 	border-top: .6em solid #222;
+	clear: both;
 	text-align: center;
 	padding: 2rem 0 2rem 0;
+	margin-top: 1rem;
 }
 
 #site-footer .copyright {
@@ -407,12 +391,6 @@ article {
 
 #site-footer .copyright .site-name {
 	font-weight: bold;
-}
-
-#site-footer .scouting-world {
-	height: 72px;
-	width: 64px;
-	margin: 1.4em auto;
 }
 
 /* Layout inside posts and pages */
@@ -479,14 +457,13 @@ article .entry-content {
 }
 
 article blockquote {
-	padding: .4em 1.4em;
-	margin: 0;
-	font-size: 1.14em;
+	padding: 0 1.4em;
 	opacity: .8;
 	font-style: italic;
 }
 
 article figure.featured {
+	box-sizing: border-box;
 	max-width: 100%;
 	overflow: hidden;
 	padding: 10px;
@@ -529,27 +506,27 @@ article p .more-link {
 
 #primary article {
 	margin-bottom: 1rem;
-	border-bottom: 1px dashed #DFB248;
 	color: #420;
 }
 
-#primary article strong {
-	font-family: Arvo, Georgia, Serif;
-	font-weight: bold;
+#primary article.news-full,
+#primary article.news-short {
+		background: transparent url(images/border-stitched.png) repeat-x bottom;
+		padding-bottom: 2px;
 }
 
 /* Navigation - access menu */
-#access {
+#main-navigation{
 	padding: 0;
 }
 
-#access .menu, #access .menu-header {
+#main-navigation .menu, #main-navigation .menu-header {
 	margin: 0 auto;
-	width: 320px;
+	max-width: 958px;
 	padding: .4em;
 }
 
-#access ul {
+#main-navigation ul {
 	overflow: hidden;
 	margin: 0;
 	list-style: none;
@@ -559,37 +536,37 @@ article p .more-link {
 	padding: 0;
 }
 
-#access li {
+#main-navigation li {
 	float: left;
 	display: block;
 	padding: 0;
 }
 
-#access li a {
+#main-navigation li a {
 	padding: .1em .4em;
 	color: #DFB248;
 	display: block;
-	border-radius: .5em;
+	border-radius: .2em;
 	font-weight: bold;
 }
 
-#access .current_page_item > a, 
-#access .current_page_item > a:visited {
+#main-navigation .current_page_item > a, 
+#main-navigation .current_page_item > a:visited {
 	color: #e2d7bc;
 }
 
-#access .current_page_item:hover > a, 
-#access .current_page_item:hover > a:visited {
+#main-navigation .current_page_item:hover > a, 
+#main-navigation .current_page_item:hover > a:visited {
 	color: #fff;
 }
 
-#access a:hover {
+#main-navigation a:hover {
 	color: #fff;
 	background: #d91e26;
 	text-shadow: none;
 }
 
-#access li .sub-menu {
+#main-navigation li .sub-menu {
 	position: absolute;
 	padding: .75rem;
 	z-index: 3000;
@@ -601,15 +578,15 @@ article p .more-link {
 	font-size: .75rem;
 }
 
-#access li:hover > .sub-menu {
+#main-navigation li:hover > .sub-menu {
 	display: block;
 }
 
-#access li:focus-within > .sub-menu {
+#main-navigation li:focus-within > .sub-menu {
 	display: block;
 }
 
-#access .sub-menu li {
+#main-navigation .sub-menu li {
 	display: block;
 	clear: both;
 	float: none;
@@ -617,34 +594,34 @@ article p .more-link {
 	border-bottom: 1px solid #dfb248;
 }
 
-#access .sub-menu li:before {
+#main-navigation .sub-menu li:before {
 	content: '\25BA';
 	font-size: .65em;
 	color: #ddd;
 }
-#access .sub-menu li:last-child {
+#main-navigation .sub-menu li:last-child {
 	border: none;
 }
 
-#access .sub-menu li a {
+#main-navigation .sub-menu li a {
 	display: inline-block;
 	color: #000;
 	font-weight: 500;
 }
 
-#access .sub-menu a:hover {
+#main-navigation .sub-menu a:hover {
 	color: #e45b2c;
 	background: none;
 }
 
-#access li > .current_page_item a,
-#access li > .current_page_item a:visited {
+#main-navigation li > .current_page_item a,
+#main-navigationli > .current_page_item a:visited {
 	background: #e2d7bc;
 	border-color: #d1c6ab;
 	color: #fff;
 }
 
-#access li .current_page_item a:hover {
+#main-navigation li .current_page_item a:hover {
 	border-color: #c20;
 }
 
@@ -738,19 +715,22 @@ button, input[type="button"]:hover, input[type="reset"]:hover, input[type="submi
 }
 
 /* Events widget */
-#secondary .eo-events-widget {
+#secondary .eo-events-widget,
+#sidebar .eo-events-widget {
 	padding: 0;
 	margin: 0;
 	list-style: none;
 }
 
-#secondary .eo-events-widget li {
+#secondary .eo-events-widget li,
+#sidebar .eo-events-widget li {
 	padding: .9em .9em;
 	font-size: .74em;
 	margin: .1em 0;
 }
 
-#secondary .eo-events-widget li:nth-of-type(odd) {
+#secondary .eo-events-widget li:nth-of-type(odd),
+#sidebar .eo-events-widget li:nth-of-type(odd) {
 	background: #fff;
 }
 
@@ -1010,11 +990,13 @@ button, input[type="button"]:hover, input[type="reset"]:hover, input[type="submi
 	display: none;
 }
 
-#secondary .ngg_images .widget-title {
+#secondary .ngg_images .widget-title,
+#sidebar .ngg_images .widget-title {
 	display: none;
 }
 
-#secondary .ngg_images img {
+#secondary .ngg_images img,
+#sidebar .ngg_images img {
 	width: 99%;
 	border-radius: .5em;
 	margin-bottom: .5em;
@@ -1068,7 +1050,8 @@ article h3 {
 	height: auto !important;
 }
 
-#secondary h3 {
+#secondary h3,
+#sidebar h3 {
 	font-family: Arvo, Georgia, Serif;
 	font-size: 1em;
 }
@@ -1115,10 +1098,6 @@ article h3 {
 	font-size: 1.2em;
 }
 
-.page article {
-	/* width: 100%; */
-}
-
 .page article .ngg-albumoverview {
 	float: left;
 	width: 120px;
@@ -1140,8 +1119,6 @@ article h3 {
 	margin: 0 auto;
 	background: #fff;
 }
-
-
 
 /*-Multiblog Ajustments 
 (speltakken)------------------------------------------------------------------------------- */*/
@@ -1171,7 +1148,7 @@ article h3 {
 	color: #079C42;
 }
 
-.blogid-12 #access a:hover, .blogid-13 #access a:hover {
+.blogid-12 #main-navigationa:hover, .blogid-13 #main-navigationa:hover {
 	background-color: #079C42 !important;
 	border-color: #00B44A !important;
 }
@@ -1204,7 +1181,7 @@ article h3 {
 	color: #084292;
 }
 
-.blogid-18 #access a:hover {
+.blogid-18 #main-navigationa:hover {
 	background-color: #084292;
 	!important;
 }
@@ -1221,7 +1198,8 @@ article h3 {
 		margin-right: 1.4em;
 	}
 
-	.date #secondary {
+	.date #secondary,
+	.date #sidebar {
 		width: 13rem;
 	}
 }
@@ -1233,23 +1211,18 @@ article h3 {
 		margin: 0 auto;
 	}
 
-	#access {
+	#main-navigation{
 		background: transparent url(images/border-stitched.png) repeat-x;
 		border: none;
 	}
 
-	#access .menu, #access .menu-header {
+	#main-navigation.menu, #main-navigation.menu-header {
 		width: 768px;
 		padding: .6em 0 .4em 0;
 	}
 
-	#access .menu li a, #access .menu-header li a {
+	#main-navigation.menu li a, #main-navigation.menu-header li a {
 		padding: .5em;
-	}
-
-	#filler {
-		background: #FFF9DE url(images/border-stitched.png) repeat-x;
-		border: none;
 	}
 
 	#site-logo {
@@ -1307,12 +1280,14 @@ article h3 {
 		padding: 0 .4em 0 1.4em;
 	}
 
-	#secondary {
+	#secondary,
+	#sidebar {
 		width: 195px;
 		font-size: .9em;
 	}
 
-	#secondary .widget-container {
+	#secondary .widget-container,
+	#sidebar .widget-container {
 		float: left;
 		margin: 1.5%;
 	}
@@ -1326,22 +1301,12 @@ article h3 {
 		width: 30%;
 	}
 
-	#secondary .widget-title {
+	#secondary .widget-title,
+	#sidebar .widget-title {
 		background: transparent url(images/border-stitched-small.png) repeat-x bottom;
 		border: none;
 		padding: .9em .4em;
 		margin-bottom: .9em;
-	}
-
-	#primary article {
-		background: transparent url(images/border-stitched.png) repeat-x bottom;
-		border: none;
-	}
-
-	.single #primary, .page #primary {
-		/* margin: 0 auto; */
-		/* float: none; */
-		/* width: 768px; */
 	}
 
 	.single #primary .entry-title, .page #primary .entry-title {
@@ -1391,17 +1356,19 @@ article h3 {
 		margin-right: 41px;
 	}
 
-	#access .menu, #access .menu-header {
+	#main-navigation.menu, #main-navigation.menu-header {
 		width: 958px;
 	}
 
-	#secondary .widget-container {
+	#secondary .widget-container,
+	#sidebar .widget-container {
 		width: 100%;
 		margin: 0;
 		float: none;
 	}
 
-	#secondary {
+	#secondary,
+	#sidebar {
 		width: 239px;
 	}
 

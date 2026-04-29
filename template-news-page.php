@@ -6,8 +6,8 @@
 
 get_header(); ?>
 	
-	<div id="primary">
+	<section id="primary">
 		<?php get_template_part( 'loop', 'news' ); ?>
-	</div>
+	</section>
 	
 <?php get_footer(); ?>

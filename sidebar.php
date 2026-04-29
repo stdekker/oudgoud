@@ -3,11 +3,8 @@
  * The Sidebar containing the primary and secondary widget areas.
  */
 ?>
-<section class="widgets" id="secondary">
+<aside class="widgets" id="sidebar" role="complementary" aria-label="Sidebar">
 	<?php dynamic_sidebar( 'primary-widget-area' ); ?>
-</section>
-
-<section class="widgets" id="tertiary">
 	<?php dynamic_sidebar( 'secondary-widget-area' ); ?>
-</section>
+</aside>
 

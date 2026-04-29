@@ -26,13 +26,10 @@
 			<h2 class="site-description"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></h2>
 		</section>
 			
-		<section id="access" role="navigation">
+		<section id="main-navigation" role="navigation">
 			<?php /*  Allow screen readers / text browsers to skip the navigation menu and get right to the good stuff */ ?>
 			<a id="skip" href="#content" title="Snel naar de inhoud">Snel naar de inhoud</a>
 			<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>
 		</section>
 		
 	</header>
-	
-	<div id="filler">
-		<div id="positioning">
