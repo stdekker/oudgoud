@@ -4,11 +4,11 @@
 	Description: Custom theme for JvH
 	Author: Stijn Dekker
 	Author URI: http://stijndekker.nl/
-	Version: 0.2
+	Version: 0.3
 	Tags: custom
 
-	License: GNU General Public License v2.0
-	License URI: http://www.gnu.org/licenses/gpl-2.0.html
+	License: GNU General Public License v3.0
+	License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 */
 
@@ -312,7 +312,6 @@ td {
     Author: Stijn Dekker
    
 	We are building this site '320 and up'. so basic styles should fit small mobile devices.
-	Wider screens (and IE support) come later.
 	
 ==================================================================================================================*/
 
@@ -356,16 +355,17 @@ td {
 
 #site-logo {
 	background: url(images/logo/groep_320.png) no-repeat;
-	height: 72px;
-	width: 300px;
-	background-size: 100%;
+	height: 71px;
+	width: 320px;
+	max-width: 100%;
+	background-size: contain;
 	margin: 0 auto;
 }
 
 #site-logo a {
 	display: block;
-	width: 320px;
-	height: 150px;
+	width: 100%;
+	height: 100%;
 	background: transparent;
 }
 
@@ -1256,58 +1256,46 @@ article h3 {
 		background-image: url(images/logo/groep_479.png);
 		background-repeat: no-repeat;
 		background-position: center left;
-		height: 122px;
-		width: 484px;
+		height: 110px;
+		width: 479px;
 		margin: 0;
-		background-position: center left;
 	}
 
 	#site-logo a {
 		display: block;
-		width: 678px;
-		height: 150px;
+		width: 100%;
+		height: 100%;
 		background: transparent;
 	}
 
 	/* Speltaklogo's */
-	.blogid-1 #site-logo {
-		background-size: 100%;
-	}
-
 	.blogid-11 #site-logo {
 		background-image: url(images/logo/bevers_479.png);
-		background-size: auto;
 	}
 
 	.blogid-12 #site-logo {
 		background-image: url(images/logo/welpen_jongens_479.png);
-		background-size: auto;
 	}
 
 	.blogid-13 #site-logo {
 		background-image: url(images/logo/welpen_meisjes_479.png);
-		background-size: auto;
 	}
 
 	.blogid-14 #site-logo {
 		background-image: url(images/logo/verkenners_h110.png);
-		background-size: auto;
 		width: 621px;
 	}
 
 	.blogid-15 #site-logo {
 		background-image: url(images/logo/gidsen_479.png);
-		background-size: auto;
 	}
 
 	.blogid-16 #site-logo {
 		background-image: url(images/logo/explorers_479.png);
-		background-size: auto;
 	}
 
 	.blogid-18 #site-logo {
 		background-image: url(images/logo/vrienden_479.png);
-		background-size: auto;
 	}
 
 	#primary {
@@ -1407,11 +1395,6 @@ article h3 {
 		width: 958px;
 	}
 
-	#site-logo {
-		width: 479px;
-		height: 123px;
-	}
-
 	#secondary .widget-container {
 		width: 100%;
 		margin: 0;
@@ -1495,26 +1478,8 @@ article h3 {
 		padding: 0;
 	}
 
-	/* Jan van Hoof voorpagina menu */
-	.blogid-1 #access .menu a {
-		letter-spacing: 2px;
-		font-size: 1em;
-		font-weight: bold;
-		padding: .4em .9em;
-	}
-
 	/* Local overrides - af en toe opruimen aub.*/
-	.post-901.news-full .entry-title {
-		font-size: 2.8em;
-	}
 
-	.home article:first-of-type .entry-title {
-		font-size: 3.3em;
-	}
-
-	#site-logo {
-		background-size: 100%;
-	}
 	.news-short .featured {
 		max-width: 25%; 
 		float: left;
