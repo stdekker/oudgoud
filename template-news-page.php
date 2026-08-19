@@ -6,8 +6,9 @@
 
 get_header(); ?>
 	
-	<section id="primary">
-		<?php get_template_part( 'loop', 'news' ); ?>
-	</section>
+		<div id="primary">
+			<h1 class="screen-reader-text"><?php the_title(); ?></h1>
+			<?php get_template_part( 'loop', 'news' ); ?>
+		</div>
 	
 <?php get_footer(); ?>

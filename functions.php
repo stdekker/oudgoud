@@ -120,7 +120,7 @@ function haven_comment( $comment, $args, $depth ) {
 	<li <?php comment_class(); ?> id="li-comment-<?php comment_ID(); ?>">
 		<article id="comment-<?php comment_ID(); ?>">
 			<header class="comment-meta">
-				<cite class="comment-author"><?php comment_author_link(); ?></cite>
+					<span class="comment-author"><?php comment_author_link(); ?></span>
 				<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>">
 					<time datetime="<?php comment_time( 'c' ); ?>">
 						<?php
@@ -194,7 +194,7 @@ function haven_posted_on() {
 	// m = 01–12
 	// j = 1–31
 	// d = 01–31
-	printf( __( '<time>%3$s %2$s %4$s</time>', 'oudgoud' ),
+	printf( __( '<time datetime="%5$s">%3$s %2$s %4$s</time>', 'oudgoud' ),
 		// %1$s = container class
 		'meta-prep meta-prep-author',
 		// %2$s = month: /yyyy/mm/
@@ -210,12 +210,13 @@ function haven_posted_on() {
 			get_the_date( 'j' )
 		),
 		// %4$s = year: /yyyy/
-		sprintf( '<a href="%1$s" title="%2$s" rel="bookmark">%3$s</a>',
-			esc_url( get_year_link( get_the_date( 'Y' ) ) ),
-			esc_attr( 'View Archives for ' . get_the_date( 'Y' ) ),
-			get_the_date( 'Y' )
-		)
-	);
+			sprintf( '<a href="%1$s" title="%2$s" rel="bookmark">%3$s</a>',
+				esc_url( get_year_link( get_the_date( 'Y' ) ) ),
+				esc_attr( 'View Archives for ' . get_the_date( 'Y' ) ),
+				get_the_date( 'Y' )
+			),
+			esc_attr( get_the_date( 'c' ) )
+		);
 }
 endif;
 
@@ -259,19 +260,9 @@ endif;
 	add_filter( 'get_search_form', 'haven_search_form' );
 
 
-function haven_menu_args($args = '')
-{
-	$args['container'] = 'nav';
-	$args['items_wrap'] = '<ul id="%1$s" class="%2$s">%3$s</ul>';
-	return $args;
-} // function
-
-add_filter( 'wp_nav_menu_args', 'haven_menu_args' );
-
-
-function haven_page_nav($id=null) { 
+function haven_page_nav( $id = null ) {
 ?>
-		<nav <?php if($id) { printf( 'id="%s"', esc_attr( $id ) );} ?> class="page-navigation">
+			<nav <?php if ( $id ) { printf( 'id="%s"', esc_attr( $id ) ); } ?> class="page-navigation" aria-label="<?php esc_attr_e( 'Nieuwspaginering', 'oudgoud' ); ?>">
 		<div class="next-posts ni"><?php next_posts_link('&laquo; Ouder nieuws'); ?></div>
 		<div class="previous-posts ni"><?php previous_posts_link('Nieuwer nieuws &raquo;'); ?></div>
 		</nav>
@@ -281,12 +272,11 @@ function haven_page_nav($id=null) {
 }
 
 function haven_render_news_article( $post, $format = 'full' ) { ?>
-	<article <?php post_class( 'news-' . $format ); ?>>
+	<article id="post-<?php the_ID(); ?>" <?php post_class( 'news-' . $format ); ?>>
 		<header>
-			<h1 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'oudgoud' ), the_title_attribute( array( 'echo' => false ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h1>
+			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf( esc_attr__( 'Permalink to %s', 'oudgoud' ), the_title_attribute( array( 'echo' => false ) ) ); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+			<div class="entry-meta"><time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php the_time( "j F `y" ); ?></time></div>
 		</header>
-
-		<section class="entry-meta"><time><?php the_time( "j F `y" ); ?></time></section>
 		<?php if ( has_post_thumbnail() ) : ?>
 			<figure class="featured">
 				<a href="<?php the_permalink(); ?>">
@@ -295,7 +285,7 @@ function haven_render_news_article( $post, $format = 'full' ) { ?>
 			</figure>
 		<?php endif; ?>
 
-		<section class="entry-content">
+		<div class="entry-content">
 			<?php
 			switch ( $format ) {
 				case 'full':
@@ -307,7 +297,7 @@ function haven_render_news_article( $post, $format = 'full' ) { ?>
 					break;
 			}
 			?>
-		</section>
+		</div>
 	</article>
 <?php }
 

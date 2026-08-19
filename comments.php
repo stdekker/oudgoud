@@ -11,16 +11,19 @@
 	endif;
 ?>
 
-<?php if ( have_comments() ) : ?>
+<?php if ( have_comments() || comments_open() ) : ?>
 <section id="comments">
-			<h3 id="comments-title"><?php
+	<?php if ( have_comments() ) : ?>
+				<h2 id="comments-title"><?php
 				printf( _n( 'Een reactie op %2$s', '%1$s reacties op %2$s', get_comments_number(), 'oudgoud' ),
 				number_format_i18n( get_comments_number() ), '' . get_the_title() . '' );
-			?></h3>
+				?></h2>
 
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
-				<?php previous_comments_link( __( '&larr; Older Comments', 'oudgoud' ) ); ?>
-				<?php next_comments_link( __( 'Newer Comments &rarr;', 'oudgoud' ) ); ?>
+				<nav class="comment-navigation" aria-label="<?php esc_attr_e( 'Reactienavigatie boven', 'oudgoud' ); ?>">
+					<?php previous_comments_link( __( '&larr; Older Comments', 'oudgoud' ) ); ?>
+					<?php next_comments_link( __( 'Newer Comments &rarr;', 'oudgoud' ) ); ?>
+				</nav>
 <?php endif; // check for comment navigation ?>
 
 			<ol class="comment-list">
@@ -28,10 +31,20 @@
 			</ol>
 
 <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
-				<?php previous_comments_link( __( '&larr; Older Comments', 'oudgoud' ) ); ?>
-				<?php next_comments_link( __( 'Newer Comments &rarr;', 'oudgoud' ) ); ?>
+				<nav class="comment-navigation" aria-label="<?php esc_attr_e( 'Reactienavigatie onder', 'oudgoud' ); ?>">
+					<?php previous_comments_link( __( '&larr; Older Comments', 'oudgoud' ) ); ?>
+					<?php next_comments_link( __( 'Newer Comments &rarr;', 'oudgoud' ) ); ?>
+				</nav>
 <?php endif; // check for comment navigation ?>
- </section>
-<?php endif; // end have_comments() ?>
+	<?php endif; // end have_comments() ?>
 
-<?php comment_form(); ?>
+	<?php
+	comment_form(
+		array(
+			'title_reply_before' => '<h2 id="reply-title" class="comment-reply-title">',
+			'title_reply_after'  => '</h2>',
+		)
+	);
+	?>
+</section>
+<?php endif; ?>

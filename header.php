@@ -1,35 +1,44 @@
 <?php
 /**
- * The Header for our theme.
+ * The header for our theme.
  */
- 
-?><!DOCTYPE html>
+
+?><!doctype html>
 <html <?php language_attributes(); ?>>
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
+		<meta charset="<?php bloginfo( 'charset' ); ?>">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="pingback" href="<?php echo esc_url( get_bloginfo( 'pingback_url' ) ); ?>" />
-<?php
-		wp_head();
-?>
+		<?php wp_head(); ?>
 	</head>
-	<body <?php
-	$bid = get_current_blog_id();
-	body_class( 'blogid-' . $bid ); ?>>
-	
-	<header role="banner" id="site-header">
-		<section id="branding">
-			<figure id="site-logo">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="Terug naar de voorpagina" rel="home">
-			</a></figure>
-			<h1 class="site-name"></h1>
-			<h2 class="site-description"><?php echo esc_html( get_bloginfo( 'description' ) ); ?></h2>
-		</section>
-			
-		<section id="main-navigation" role="navigation">
-			<?php /*  Allow screen readers / text browsers to skip the navigation menu and get right to the good stuff */ ?>
-			<a id="skip" href="#content" title="Snel naar de inhoud">Snel naar de inhoud</a>
-			<?php wp_nav_menu( array( 'container_class' => 'menu-header', 'theme_location' => 'primary' ) ); ?>
-		</section>
-		
-	</header>
+	<body <?php body_class( 'blogid-' . get_current_blog_id() ); ?>>
+		<?php wp_body_open(); ?>
+		<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Snel naar de inhoud', 'oudgoud' ); ?></a>
+
+		<header id="site-header">
+			<div id="branding">
+				<div id="site-logo">
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+						<span class="screen-reader-text"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></span>
+					</a>
+				</div>
+				<?php $site_description = get_bloginfo( 'description' ); ?>
+				<?php if ( $site_description ) : ?>
+					<p class="site-description screen-reader-text"><?php echo esc_html( $site_description ); ?></p>
+				<?php endif; ?>
+			</div>
+
+			<nav id="main-navigation" aria-label="<?php esc_attr_e( 'Hoofdnavigatie', 'oudgoud' ); ?>">
+				<?php
+				wp_nav_menu(
+					array(
+						'container'       => 'div',
+						'container_class' => 'menu-header',
+						'theme_location'  => 'primary',
+					)
+				);
+				?>
+			</nav>
+		</header>
+
+		<main id="content" tabindex="-1">

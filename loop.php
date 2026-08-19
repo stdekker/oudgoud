@@ -7,7 +7,7 @@
 <?php /* If there are no posts to display, such as an empty archive page */ ?>
 <?php if ( ! have_posts() ) : ?>
 	<article id="post-0" class="post error404 not-found">
-		<h1 class="entry-title"><?php _e( 'Not Found', 'oudgoud' ); ?></h1>
+		<h2 class="entry-title"><?php _e( 'Not Found', 'oudgoud' ); ?></h2>
 		<div class="entry-content">
 			<p><?php _e( 'Apologies, but no results were found for the requested archive. Perhaps searching will help find a related post.', 'oudgoud' ); ?></p>
 			<?php get_search_form(); ?>
@@ -62,8 +62,9 @@
 
 <?php /* How to display posts in the asides category */ ?>
 
-	<?php elseif ( in_category( _x('asides', 'asides category slug', 'oudgoud') ) ) : ?>
-		<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+		<?php elseif ( in_category( _x('asides', 'asides category slug', 'oudgoud') ) ) : ?>
+			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+				<h2 class="screen-reader-text"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 		<?php if ( is_archive() || is_search() ) : // Display excerpts for archives and search. ?>
 			<div class="entry-summary">
@@ -114,7 +115,7 @@
 
 <?php /* Display navigation to next/previous pages when applicable */ ?>
 <?php if (  $wp_query->max_num_pages > 1 ) : ?>
-	<nav id="nav-below" class="navigation">
+	<nav id="nav-below" class="navigation" aria-label="<?php esc_attr_e( 'Archiefpaginering', 'oudgoud' ); ?>">
 		<?php next_posts_link( __( '&larr; Older posts', 'oudgoud' ) ); ?>
 		<?php previous_posts_link( __( 'Newer posts &rarr;', 'oudgoud' ) ); ?>
 	</nav><!-- #nav-below -->

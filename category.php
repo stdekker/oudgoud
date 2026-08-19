@@ -4,12 +4,12 @@
  */
 
 get_header(); ?>
-<section id="primary">
+<div id="primary">
 
 				<h1 class="archive-title"><?php
 					printf( __( '%s archief', 'oudgoud' ), '' . single_cat_title( '', false ) . '' );
 				?></h1>
-	<section id="archive" class="post-grid">
+	<div id="archive" class="post-grid">
 					<?php
 						$category_description = category_description();
 						if ( ! empty( $category_description ) )
@@ -19,6 +19,6 @@ get_header(); ?>
 					
 					get_template_part( 'loop', 'category' );
 					?>
-	</section>				
-</section>
+	</div>
+</div>
 <?php get_footer(); ?>

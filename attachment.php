@@ -7,24 +7,27 @@
  */
 
 get_header(); ?>
+<div id="primary">
 <?php if ( have_posts() ) while ( have_posts() ) : the_post(); ?>
 				<?php if ( ! empty( $post->post_parent ) ) : ?>
 					<p class="page-title"><a href="<?php echo esc_url( get_permalink( $post->post_parent ) ); ?>" title="<?php echo esc_attr( sprintf( __( 'Return to %s', 'oudgoud' ), get_the_title( $post->post_parent ) ) ); ?>" rel="gallery"><?php
 						/* translators: %s - title of parent post */
 						printf( __( '<span class="meta-nav">&larr;</span> %s', 'oudgoud' ), get_the_title( $post->post_parent ) );
 					?></a></p>
-				<?php endif; ?>
-				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-					<h2 class="entry-title"><?php the_title(); ?></h2>
-					<div class="entry-meta">
-						<?php
-							printf( __('Published %2$s', 'oudgoud'),
-								'meta-prep meta-prep-entry-date',
-								sprintf( '<abbr title="%1$s">%2$s</abbr>',
-									esc_attr( get_the_time() ),
-									get_the_date()
-								)
-							);
+					<?php endif; ?>
+					<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+						<header class="entry-header">
+							<h1 class="entry-title"><?php the_title(); ?></h1>
+						<div class="entry-meta">
+							<?php
+								printf(
+									__( 'Published %s', 'oudgoud' ),
+									sprintf(
+										'<time datetime="%1$s">%2$s</time>',
+										esc_attr( get_the_date( 'c' ) ),
+										esc_html( get_the_date() )
+									)
+								);
 							if ( wp_attachment_is_image() ) {
 								echo ' | ';
 								$metadata = wp_get_attachment_metadata();
@@ -38,9 +41,10 @@ get_header(); ?>
 								);
 							}
 						?>
-						<?php edit_post_link( __( 'Edit', 'oudgoud' ), '', '' ); ?>
-					</div><!-- .entry-meta -->
-					<div class="entry-content">
+							<?php edit_post_link( __( 'Edit', 'oudgoud' ), '', '' ); ?>
+						</div><!-- .entry-meta -->
+						</header>
+						<div class="entry-content">
 						<div class="entry-attachment">
 <?php if ( wp_attachment_is_image() ) :
 	$attachments = array_values( get_children( array( 'post_parent' => $post->post_parent, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC', 'orderby' => 'menu_order ID' ) ) );
@@ -66,7 +70,7 @@ get_header(); ?>
 								$attachment_size = apply_filters( 'oudgoud_attachment_size', 900 );
 								echo wp_get_attachment_image( $post->ID, array( $attachment_size, 9999 ) ); // filterable image width with, essentially, no limit for image height.
 							?></a></p>
-							<nav id="nav-below" class="navigation">
+								<nav id="nav-below" class="navigation" aria-label="<?php esc_attr_e( 'Afbeeldingsnavigatie', 'oudgoud' ); ?>">
 								<div class="nav-previous"><?php previous_image_link( false ); ?></div>
 								<div class="nav-next"><?php next_image_link( false ); ?></div>
 							</nav><!-- #nav-below -->
@@ -74,15 +78,18 @@ get_header(); ?>
 							<a href="<?php echo esc_url( wp_get_attachment_url() ); ?>" title="<?php echo esc_attr( get_the_title() ); ?>" rel="attachment"><?php echo esc_html( basename( get_permalink() ) ); ?></a>
 <?php endif; ?>
 						</div><!-- .entry-attachment -->
-						<div class="entry-caption"><?php if ( !empty( $post->post_excerpt ) ) the_excerpt(); ?></div>
+							<?php if ( ! empty( $post->post_excerpt ) ) : ?>
+								<div class="entry-caption"><?php the_excerpt(); ?></div>
+							<?php endif; ?>
 <?php the_content( __( 'Continue reading &rarr;', 'oudgoud' ) ); ?>
 <?php wp_link_pages( array( 'before' => '' . __( 'Pages:', 'oudgoud' ), 'after' => '' ) ); ?>
-						<footer class="entry-utility">
+						</div><!-- .entry-content -->
+							<footer class="entry-utility">
 							<?php haven_posted_in(); ?>
 							<?php edit_post_link( __( 'Edit', 'oudgoud' ), ' <span class="edit-link">', '</span>' ); ?>
-						</footer><!-- .entry-utility -->
-<?php comments_template(); ?>
-					</div><!-- .entry-content -->
-				</article>
+							</footer><!-- .entry-utility -->
+					</article>
+					<?php comments_template(); ?>
 <?php endwhile; ?>
+</div>
 <?php get_footer(); ?>
