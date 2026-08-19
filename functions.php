@@ -47,6 +47,23 @@ function haven_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'haven_enqueue_assets' );
 
 /**
+ * Load editor-only compatibility fixes.
+ */
+function haven_enqueue_block_editor_assets() {
+	$script_path = get_template_directory() . '/js/block-editor.js';
+	$version     = file_exists( $script_path ) ? (string) filemtime( $script_path ) : wp_get_theme()->get( 'Version' );
+
+	wp_enqueue_script(
+		'oudgoud-block-editor',
+		get_template_directory_uri() . '/js/block-editor.js',
+		array( 'wp-element', 'wp-hooks' ),
+		$version,
+		true
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'haven_enqueue_block_editor_assets' );
+
+/**
  * Allow only locally registered Oudgoud block patterns.
  *
  * Synced patterns and reusable blocks are user content and are not part of the

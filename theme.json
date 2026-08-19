@@ -53,6 +53,16 @@
 				}
 			]
 		},
+		"dimensions": {
+			"defaultAspectRatios": true,
+			"aspectRatios": [
+				{
+					"name": "Panorama - 21:9",
+					"slug": "panorama",
+					"ratio": "21/9"
+				}
+			]
+		},
 		"layout": {
 			"contentSize": "720px",
 			"wideSize": "1100px"
