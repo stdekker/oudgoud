@@ -46,17 +46,28 @@ add_action( 'init', 'haven_register_block_styles' );
  * Load the theme stylesheet on top of Global Styles.
  */
 function haven_enqueue_assets() {
-	$stylesheet_path = get_stylesheet_directory() . '/style.css';
-	$version         = file_exists( $stylesheet_path ) ? (string) filemtime( $stylesheet_path ) : wp_get_theme()->get( 'Version' );
+	$stylesheet_path          = get_stylesheet_directory() . '/style.css';
+	$stylesheet_version       = file_exists( $stylesheet_path ) ? (string) filemtime( $stylesheet_path ) : wp_get_theme()->get( 'Version' );
+	$header_navigation_path   = get_template_directory() . '/js/header-navigation.js';
+	$header_navigation_version = file_exists( $header_navigation_path ) ? (string) filemtime( $header_navigation_path ) : wp_get_theme()->get( 'Version' );
 
 	wp_enqueue_style(
 		'oudgoud-style',
 		get_stylesheet_uri(),
 		array(),
-		$version
+		$stylesheet_version
 	);
 
 	wp_style_add_data( 'oudgoud-style', 'path', $stylesheet_path );
+
+	wp_enqueue_script(
+		'oudgoud-header-navigation',
+		get_template_directory_uri() . '/js/header-navigation.js',
+		array(),
+		$header_navigation_version,
+		true
+	);
+	wp_script_add_data( 'oudgoud-header-navigation', 'strategy', 'defer' );
 }
 add_action( 'wp_enqueue_scripts', 'haven_enqueue_assets' );
 
