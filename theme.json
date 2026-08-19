@@ -42,6 +42,11 @@
 					"slug": "gold"
 				},
 				{
+					"color": "#079e42",
+					"name": "Groen",
+					"slug": "green"
+				},
+				{
 					"color": "#442200",
 					"name": "Bruin",
 					"slug": "brown"
