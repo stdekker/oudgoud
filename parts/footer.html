@@ -1,11 +1,19 @@
-<!-- wp:group {"templateLock":"all","className":"site-footer__inner","layout":{"type":"constrained"}} -->
+<!-- wp:group {"templateLock":"all","className":"site-footer__inner","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","verticalAlignment":"center"}} -->
 <div class="wp-block-group site-footer__inner">
-	<!-- wp:site-title {"level":0,"isLink":true,"className":"site-footer__title"} /-->
-	<!-- wp:html -->
-	<address>Gouderaksedijk 30-A, 2808 NG Gouda</address>
-	<!-- /wp:html -->
-	<!-- wp:paragraph {"className":"site-footer__copyright"} -->
-	<p class="site-footer__copyright">© 1945 tot nu</p>
-	<!-- /wp:paragraph -->
+	<!-- wp:group {"templateLock":"all","className":"site-footer__details","layout":{"type":"flex","orientation":"vertical"}} -->
+	<div class="wp-block-group site-footer__details">
+		<!-- wp:site-title {"level":0,"isLink":true,"className":"site-footer__title"} /-->
+		<!-- wp:html -->
+		<address>Gouderaksedijk 30-A, 2808 NG Gouda</address>
+		<!-- /wp:html -->
+		<!-- wp:paragraph {"className":"site-footer__copyright"} -->
+		<p class="site-footer__copyright">© 1945 tot nu</p>
+		<!-- /wp:paragraph -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:social-links {"iconColor":"brown","openInNewTab":true,"metadata":{"name":"Sociale media"},"className":"has-icon-color is-style-logos-only site-footer__social-links","layout":{"type":"flex","justifyContent":"right"}} -->
+	<ul class="wp-block-social-links has-icon-color is-style-logos-only site-footer__social-links"></ul>
+	<!-- /wp:social-links -->
 </div>
 <!-- /wp:group -->
