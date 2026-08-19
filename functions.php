@@ -29,6 +29,20 @@ function haven_setup() {
 add_action( 'after_setup_theme', 'haven_setup' );
 
 /**
+ * Register Oudgoud block styles.
+ */
+function haven_register_block_styles() {
+	$torn_paper_style = array(
+		'name'  => 'torn-paper',
+		'label' => __( 'Gescheurd papier', 'oudgoud' ),
+	);
+
+	register_block_style( 'core/image', $torn_paper_style );
+	register_block_style( 'core/cover', $torn_paper_style );
+}
+add_action( 'init', 'haven_register_block_styles' );
+
+/**
  * Load the theme stylesheet on top of Global Styles.
  */
 function haven_enqueue_assets() {
