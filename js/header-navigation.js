@@ -75,12 +75,29 @@
 			}
 
 			mountMobileSubmenuToggles( navigation );
-			responsiveContent.append( actions );
 			actions.dataset.navigationMounted = 'true';
-			navigation.classList.add( 'has-header-actions' );
 
 			const search = actions.querySelector( '.header-search' );
 			const mobileMenu = window.matchMedia( '(max-width: 599px)' );
+			const syncHeaderActionsLocation = () => {
+				if ( mobileMenu.matches ) {
+					if ( actions.parentElement !== responsiveContent ) {
+						responsiveContent.append( actions );
+					}
+
+					navigation.classList.add( 'has-header-actions' );
+					return;
+				}
+
+				if (
+					actions.parentElement !== controls ||
+					navigation.nextElementSibling !== actions
+				) {
+					navigation.after( actions );
+				}
+
+				navigation.classList.remove( 'has-header-actions' );
+			};
 			const resetMobileMenu = () => {
 				if ( search ) {
 					search.open = false;
@@ -114,7 +131,11 @@
 				attributes: true,
 			} );
 
-			mobileMenu.addEventListener( 'change', resetMobileMenuWhenHidden );
+			mobileMenu.addEventListener( 'change', () => {
+				syncHeaderActionsLocation();
+				resetMobileMenuWhenHidden();
+			} );
+			syncHeaderActionsLocation();
 			resetMobileMenuWhenHidden();
 		} );
 	}
