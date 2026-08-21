@@ -56,7 +56,7 @@ a {
 	text-underline-offset: 0.16em;
 }
 
-a:hover {
+a:not(.wp-element-button):hover {
 	color: var(--wp--preset--color--brand);
 }
 
@@ -617,6 +617,92 @@ a.header-action:hover,
 	padding-block-end: clamp(3rem, 8vw, 7rem);
 }
 
+/* Landing-page introduction. */
+
+.site-main--landing {
+	padding-block-start: 0;
+}
+
+.landing-page__content > .landing-introduction:first-child {
+	width: 100cqi;
+	max-width: none;
+	min-height: clamp(24rem, 47.619vw, 42rem) !important;
+	margin-block-start: 0;
+	margin-inline: calc(50% - 50cqi);
+	border-radius: 0;
+}
+
+.is-oudgoud-landing-page .landing-introduction {
+	min-height: 42rem !important;
+}
+
+.landing-introduction.is-style-small-panorama {
+	min-height: 32.5rem !important;
+}
+
+.landing-introduction__content {
+	--wp--style--global--content-size: var(--wp--style--global--wide-size) !important;
+
+	width: min(calc(100% - 2rem), var(--wp--style--global--wide-size));
+	margin-inline: auto;
+	color: var(--wp--preset--color--white);
+	text-align: center;
+	text-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.72);
+}
+
+.landing-introduction__content > :not(.landing-introduction__byline) {
+	width: 100%;
+	max-width: var(--wp--style--global--wide-size) !important;
+}
+
+.landing-introduction :where(.wp-block-cover__inner-container, .landing-introduction__content) > :last-child {
+	margin-block-end: 0;
+}
+
+.landing-introduction__title {
+	margin-block: 0;
+	color: inherit;
+	font-size: clamp(2.5rem, 6vw, 4.75rem);
+}
+
+.landing-introduction__byline {
+	max-width: 42rem;
+	margin-inline: auto;
+	font-family: var(--wp--preset--font-family--arvo);
+}
+
+.landing-introduction__actions {
+	margin-block-start: clamp(1.25rem, 3vw, 2rem);
+	text-shadow: none;
+}
+
+/* Identify the administrative page title in the landing-page editor. */
+.is-oudgoud-landing-page .editor-post-title {
+	padding: 0.75rem 1rem;
+	background: color-mix(in srgb, var(--wp--preset--color--brown) 5%, white);
+	color: color-mix(in srgb, var(--wp--preset--color--brown) 70%, white);
+	border: 1px dashed color-mix(in srgb, var(--wp--preset--color--brown) 35%, transparent);
+	border-radius: 0.25rem;
+	font-family: var(--wp--preset--font-family--system);
+	font-size: clamp(1.125rem, 2vw, 1.5rem);
+	font-weight: 600;
+	line-height: 1.4;
+	text-shadow: none;
+}
+
+.is-oudgoud-landing-page .editor-visual-editor__post-title-wrapper::after {
+	display: block;
+	box-sizing: border-box;
+	width: min(calc(100% - 2rem), var(--wp--style--global--content-size));
+	margin: 0.35rem auto 0;
+	color: color-mix(in srgb, var(--wp--preset--color--brown) 65%, white);
+	content: "Alleen voor beheerder — niet zichtbaar op de website";
+	font-family: var(--wp--preset--font-family--system);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}
+
 .single-article__date {
 	margin-block: -1.5rem clamp(1.5rem, 4vw, 3rem);
 }
@@ -631,17 +717,26 @@ a.header-action:hover,
 	font-size: var(--wp--preset--font-size--medium);
 }
 
-.entry-content > :is(.wp-block-image, .wp-block-cover).alignfull {
+.entry-content > :is(.wp-block-image, .wp-block-cover, .wp-block-columns).alignfull {
 	width: 100cqi;
 	max-width: none;
 	margin-inline: calc(50% - 50cqi);
 }
 
 @media (min-width: 782px) {
-	.entry-content > :is(figure, .horizontal-tiles).alignwide {
+	.entry-content > figure.alignwide {
 		width: min(calc(100% + 8rem), calc(100cqi - 16rem));
 		max-width: none;
 		margin-inline: max(-4rem, calc(50% - 50cqi + 8rem)) !important;
+	}
+
+	.entry-content > .wp-block-columns.alignwide {
+		width: min(var(--wp--style--global--wide-size), calc(100cqi - 2rem));
+		max-width: none;
+		margin-inline: max(
+			calc((100% - var(--wp--style--global--wide-size)) / 2),
+			calc(50% - 50cqi + 1rem)
+		) !important;
 	}
 }
 
@@ -806,12 +901,74 @@ textarea {
 	padding: 0.7rem 1rem;
 	cursor: pointer;
 	border: 0;
-	transition: background-color 150ms ease, color 150ms ease;
+	transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
 }
 
-:where(button, input[type="button"], input[type="reset"], input[type="submit"], .wp-element-button):hover {
+:where(button, input[type="button"], input[type="reset"], input[type="submit"]):hover {
 	background: var(--wp--preset--color--brand-dark);
 	color: var(--wp--preset--color--white);
+}
+
+.wp-block-button:not(.header-action) .wp-block-button__link {
+	--oudgoud-button-background: var(--wp--preset--color--brand);
+
+	transform-origin: center;
+}
+
+.wp-block-button__link.has-cream-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--cream);
+}
+
+.wp-block-button__link.has-panel-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--panel);
+}
+
+.wp-block-button__link.has-white-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--white);
+}
+
+.wp-block-button__link.has-brand-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--brand);
+}
+
+.wp-block-button__link.has-brand-dark-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--brand-dark);
+}
+
+.wp-block-button__link.has-gold-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--gold);
+}
+
+.wp-block-button__link.has-green-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--green);
+}
+
+.wp-block-button__link.has-brown-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--brown);
+}
+
+.wp-block-button__link.has-dark-background-color {
+	--oudgoud-button-background: var(--wp--preset--color--dark);
+}
+
+@media (hover: hover) {
+	.wp-block-button:not(.header-action) .wp-block-button__link:hover {
+		transform: scale(1.03);
+	}
+
+	.wp-block-button:not(.header-action):not(.is-style-outline) .wp-block-button__link:not(.is-style-outline):hover {
+		background-color: color-mix(in srgb, var(--oudgoud-button-background) 88%, black);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.wp-block-button:not(.header-action) .wp-block-button__link {
+		transition: background-color 150ms ease, color 150ms ease;
+	}
+
+	.wp-block-button:not(.header-action) .wp-block-button__link:hover {
+		transform: none;
+	}
 }
 
 /* Compatibility for saved classic and gallery content. */
@@ -909,6 +1066,18 @@ footer.wp-block-template-part {
 }
 
 @media (max-width: 720px) {
+	.landing-introduction {
+		padding-block: clamp(3.5rem, 12vw, 5rem);
+	}
+
+	.is-oudgoud-landing-page .landing-introduction {
+		min-height: 24rem !important;
+	}
+
+	.landing-introduction.is-style-small-panorama {
+		min-height: 20rem !important;
+	}
+
 	.entry-content {
 		padding-inline: var(--wp--preset--spacing--30);
 	}

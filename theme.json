@@ -309,6 +309,13 @@
 	},
 	"customTemplates": [
 		{
+			"name": "landing-page",
+			"postTypes": [
+				"page"
+			],
+			"title": "Landingspagina"
+		},
+		{
 			"name": "onecolumn-page",
 			"postTypes": [
 				"page"
