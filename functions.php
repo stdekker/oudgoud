@@ -68,6 +68,12 @@ function haven_enqueue_assets() {
 		$stylesheet_version
 	);
 
+	// Prevent server-rendered submenu lists from painting before Navigation CSS.
+	wp_add_inline_style(
+		'oudgoud-style',
+		'.site-navigation .wp-block-navigation__submenu-container{display:none}'
+	);
+
 	wp_style_add_data( 'oudgoud-style', 'path', $stylesheet_path );
 
 	wp_enqueue_script(
