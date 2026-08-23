@@ -21,6 +21,9 @@
 		let animationFrame = null;
 		let lastScrollY = Math.max( window.scrollY, 0 );
 		let scrollDirection = null;
+		const hoverCapable = window.matchMedia(
+			'(hover: hover) and (pointer: fine)'
+		);
 
 		const showHeader = () => {
 			header.classList.remove( 'is-scroll-hidden' );
@@ -31,9 +34,11 @@
 			scrollDirection = null;
 		};
 		const hasActiveInteraction = () =>
+			( hoverCapable.matches && header.matches( ':hover' ) ) ||
+			header.matches( ':focus-within' ) ||
 			Boolean(
 				header.querySelector(
-					':focus-visible, .header-search[open], .wp-block-navigation__responsive-container.is-menu-open'
+					'.header-search[open], .wp-block-navigation-submenu__toggle[aria-expanded="true"], .wp-block-navigation__responsive-container.is-menu-open'
 				)
 			);
 		const updateHeaderVisibility = () => {
@@ -108,6 +113,7 @@
 			} );
 		}
 
+		header.addEventListener( 'pointerenter', revealForInteraction );
 		header.addEventListener( 'focusin', revealForInteraction );
 		header.addEventListener(
 			'toggle',
@@ -191,6 +197,10 @@
 			const responsiveContent = navigation.querySelector(
 				'.wp-block-navigation__responsive-container-content'
 			);
+			const header = controls.closest( 'header.wp-block-template-part' );
+			const menuOpenButton = navigation.querySelector(
+				'.wp-block-navigation__responsive-container-open'
+			);
 
 			if ( ! responsiveContainer || ! responsiveContent ) {
 				return;
@@ -201,6 +211,82 @@
 
 			const search = actions.querySelector( '.header-search' );
 			const mobileMenu = window.matchMedia( '(max-width: 599px)' );
+			let menuLayoutFrame = null;
+			const isMobileMenuOpen = () =>
+				mobileMenu.matches &&
+				responsiveContainer.classList.contains( 'is-menu-open' );
+			const updateMobileMenuLayout = () => {
+				menuLayoutFrame = null;
+
+				if ( ! header || ! menuOpenButton || ! isMobileMenuOpen() ) {
+					return;
+				}
+
+				const headerBounds = header.getBoundingClientRect();
+				const toggleBounds = menuOpenButton.getBoundingClientRect();
+				const viewportWidth = document.documentElement.clientWidth;
+
+				responsiveContainer.style.setProperty(
+					'--oudgoud-mobile-menu-top',
+					`${ Math.max( headerBounds.bottom, 0 ) }px`
+				);
+				responsiveContainer.style.setProperty(
+					'--oudgoud-mobile-menu-toggle-top',
+					`${ toggleBounds.top }px`
+				);
+				responsiveContainer.style.setProperty(
+					'--oudgoud-mobile-menu-toggle-right',
+					`${ Math.max( viewportWidth - toggleBounds.right, 0 ) }px`
+				);
+				responsiveContainer.style.setProperty(
+					'--oudgoud-mobile-menu-toggle-width',
+					`${ toggleBounds.width }px`
+				);
+				responsiveContainer.style.setProperty(
+					'--oudgoud-mobile-menu-toggle-height',
+					`${ toggleBounds.height }px`
+				);
+			};
+			const scheduleMobileMenuLayout = () => {
+				if ( menuLayoutFrame === null ) {
+					menuLayoutFrame = window.requestAnimationFrame(
+						updateMobileMenuLayout
+					);
+				}
+			};
+			const syncMobileMenuPresentation = () => {
+				const menuIsOpen = isMobileMenuOpen();
+
+				if ( header ) {
+					header.classList.toggle( 'is-mobile-menu-open', menuIsOpen );
+				}
+
+				if ( menuIsOpen ) {
+					scheduleMobileMenuLayout();
+					return;
+				}
+
+				if ( menuLayoutFrame !== null ) {
+					window.cancelAnimationFrame( menuLayoutFrame );
+					menuLayoutFrame = null;
+				}
+
+				responsiveContainer.style.removeProperty(
+					'--oudgoud-mobile-menu-top'
+				);
+				responsiveContainer.style.removeProperty(
+					'--oudgoud-mobile-menu-toggle-top'
+				);
+				responsiveContainer.style.removeProperty(
+					'--oudgoud-mobile-menu-toggle-right'
+				);
+				responsiveContainer.style.removeProperty(
+					'--oudgoud-mobile-menu-toggle-width'
+				);
+				responsiveContainer.style.removeProperty(
+					'--oudgoud-mobile-menu-toggle-height'
+				);
+			};
 			const syncHeaderActionsLocation = () => {
 				if ( mobileMenu.matches ) {
 					if ( actions.parentElement !== responsiveContent ) {
@@ -242,23 +328,47 @@
 				}
 			};
 
-			const closeContentWithMenu = new MutationObserver( () => {
+			const syncContentWithMenu = new MutationObserver( () => {
 				if ( ! responsiveContainer.classList.contains( 'is-menu-open' ) ) {
 					resetMobileMenu();
 				}
+
+				syncMobileMenuPresentation();
 			} );
 
-			closeContentWithMenu.observe( responsiveContainer, {
+			syncContentWithMenu.observe( responsiveContainer, {
 				attributeFilter: [ 'class' ],
 				attributes: true,
 			} );
 
+			if ( header && 'ResizeObserver' in window ) {
+				const headerResizeObserver = new ResizeObserver(
+					scheduleMobileMenuLayout
+				);
+
+				headerResizeObserver.observe( header );
+			}
+
+			window.addEventListener( 'resize', scheduleMobileMenuLayout, {
+				passive: true,
+			} );
+
+			if ( window.visualViewport ) {
+				window.visualViewport.addEventListener(
+					'resize',
+					scheduleMobileMenuLayout,
+					{ passive: true }
+				);
+			}
+
 			mobileMenu.addEventListener( 'change', () => {
 				syncHeaderActionsLocation();
 				resetMobileMenuWhenHidden();
+				syncMobileMenuPresentation();
 			} );
 			syncHeaderActionsLocation();
 			resetMobileMenuWhenHidden();
+			syncMobileMenuPresentation();
 		} );
 	}
 
