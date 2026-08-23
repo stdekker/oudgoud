@@ -11,6 +11,8 @@ if ( ! isset( $content_width ) ) {
  * Register theme features shared by the front end and block editors.
  */
 function haven_setup() {
+	$editor_stylesheet = haven_get_theme_asset( 'style.css' );
+
 	load_theme_textdomain( 'oudgoud', get_template_directory() . '/languages' );
 
 	add_theme_support( 'align-wide' );
@@ -21,7 +23,9 @@ function haven_setup() {
 	add_theme_support( 'wp-block-styles' );
 	remove_theme_support( 'core-block-patterns' );
 
-	add_editor_style( 'style.css' );
+	add_editor_style(
+		add_query_arg( 'ver', $editor_stylesheet['version'], $editor_stylesheet['uri'] )
+	);
 
 	add_image_size( 'featured-full', 720, 9999 );
 	add_image_size( 'featured-short', 360, 240, true );
@@ -64,6 +68,24 @@ function haven_get_theme_asset( $relative_path ) {
 		'version' => $version,
 	);
 }
+
+/**
+ * Preload fonts used by the above-the-fold header and page title.
+ */
+function haven_preload_primary_fonts() {
+	$font_urls = array(
+		get_theme_file_uri( 'css/fonts/arvo-latin-700.woff2' ),
+		get_theme_file_uri( 'css/fonts/bevan-latin-400.woff2' ),
+	);
+
+	foreach ( $font_urls as $font_url ) {
+		printf(
+			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+			esc_url( $font_url )
+		);
+	}
+}
+add_action( 'wp_head', 'haven_preload_primary_fonts', 1 );
 
 /**
  * Register Oudgoud block styles.
@@ -132,16 +154,41 @@ function haven_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'haven_enqueue_assets' );
 
 /**
- * Load editor-only compatibility fixes.
+ * Load block-editor features required by the current editing context.
  */
 function haven_enqueue_block_editor_assets() {
-	$script = haven_get_theme_asset( 'js/block-editor.js' );
+	$news_cards = haven_get_theme_asset( 'js/news-cards-query-variation.js' );
+	$wide_image = haven_get_theme_asset( 'js/wide-image-compatibility.js' );
 
 	wp_enqueue_script(
-		'oudgoud-block-editor',
-		$script['uri'],
-		array( 'wp-blocks', 'wp-data', 'wp-dom-ready', 'wp-element', 'wp-hooks', 'wp-i18n' ),
-		$script['version'],
+		'oudgoud-news-cards-query-variation',
+		$news_cards['uri'],
+		array( 'wp-blocks', 'wp-i18n' ),
+		$news_cards['version'],
+		true
+	);
+
+	wp_enqueue_script(
+		'oudgoud-wide-image-compatibility',
+		$wide_image['uri'],
+		array( 'wp-element', 'wp-hooks' ),
+		$wide_image['version'],
+		true
+	);
+
+	$screen = get_current_screen();
+
+	if ( ! $screen || 'post' !== $screen->base || 'page' !== $screen->post_type ) {
+		return;
+	}
+
+	$landing_page = haven_get_theme_asset( 'js/landing-page-editor.js' );
+
+	wp_enqueue_script(
+		'oudgoud-landing-page-editor',
+		$landing_page['uri'],
+		array( 'wp-blocks', 'wp-data', 'wp-dom-ready' ),
+		$landing_page['version'],
 		true
 	);
 }
