@@ -29,26 +29,72 @@ function haven_setup() {
 add_action( 'after_setup_theme', 'haven_setup' );
 
 /**
+ * Resolve a theme asset's path, URI, and cache version.
+ *
+ * Development environments use file modification times. Production and
+ * staging use the version declared in style.css, so every release that changes
+ * theme assets must update the theme Version header.
+ *
+ * @param string $relative_path Theme-relative asset path.
+ * @return array Asset path, URI, and version.
+ */
+function haven_get_theme_asset( $relative_path ) {
+	static $theme_version = null;
+
+	$relative_path = ltrim( $relative_path, '/' );
+	$path          = get_theme_file_path( $relative_path );
+
+	if ( null === $theme_version ) {
+		$theme_version = (string) wp_get_theme()->get( 'Version' );
+	}
+
+	$version = $theme_version;
+
+	if ( in_array( wp_get_environment_type(), array( 'local', 'development' ), true ) && file_exists( $path ) ) {
+		$modified_time = filemtime( $path );
+
+		if ( false !== $modified_time ) {
+			$version = (string) $modified_time;
+		}
+	}
+
+	return array(
+		'path'    => $path,
+		'uri'     => get_theme_file_uri( $relative_path ),
+		'version' => $version,
+	);
+}
+
+/**
  * Register Oudgoud block styles.
  */
 function haven_register_block_styles() {
-	$torn_paper_style = array(
-		'name'  => 'torn-paper',
-		'label' => __( 'Gescheurd papier', 'oudgoud' ),
-	);
-	$small_panorama_style = array(
-		'name'  => 'small-panorama',
-		'label' => __( 'Klein panorama', 'oudgoud' ),
-	);
-	$mobile_scroll_style = array(
-		'name'  => 'mobile-scroll',
-		'label' => __( 'Mobiel scrollen', 'oudgoud' ),
+	$block_styles = array(
+		'torn-paper'    => array(
+			'blocks' => array( 'core/image', 'core/cover' ),
+			'label'  => __( 'Gescheurd papier', 'oudgoud' ),
+		),
+		'small-panorama' => array(
+			'blocks' => array( 'core/cover' ),
+			'label'  => __( 'Klein panorama', 'oudgoud' ),
+		),
+		'mobile-scroll'  => array(
+			'blocks' => array( 'core/query' ),
+			'label'  => __( 'Mobiel scrollen', 'oudgoud' ),
+		),
 	);
 
-	register_block_style( 'core/image', $torn_paper_style );
-	register_block_style( 'core/cover', $torn_paper_style );
-	register_block_style( 'core/cover', $small_panorama_style );
-	register_block_style( 'core/query', $mobile_scroll_style );
+	foreach ( $block_styles as $style_name => $block_style ) {
+		foreach ( $block_style['blocks'] as $block_name ) {
+			register_block_style(
+				$block_name,
+				array(
+					'name'  => $style_name,
+					'label' => $block_style['label'],
+				)
+			);
+		}
+	}
 }
 add_action( 'init', 'haven_register_block_styles' );
 
@@ -56,16 +102,14 @@ add_action( 'init', 'haven_register_block_styles' );
  * Load the theme stylesheet on top of Global Styles.
  */
 function haven_enqueue_assets() {
-	$stylesheet_path          = get_stylesheet_directory() . '/style.css';
-	$stylesheet_version       = file_exists( $stylesheet_path ) ? (string) filemtime( $stylesheet_path ) : wp_get_theme()->get( 'Version' );
-	$header_navigation_path   = get_template_directory() . '/js/header-navigation.js';
-	$header_navigation_version = file_exists( $header_navigation_path ) ? (string) filemtime( $header_navigation_path ) : wp_get_theme()->get( 'Version' );
+	$stylesheet        = haven_get_theme_asset( 'style.css' );
+	$header_navigation = haven_get_theme_asset( 'js/header-navigation.js' );
 
 	wp_enqueue_style(
 		'oudgoud-style',
-		get_stylesheet_uri(),
+		$stylesheet['uri'],
 		array(),
-		$stylesheet_version
+		$stylesheet['version']
 	);
 
 	// Prevent server-rendered submenu lists from painting before Navigation CSS.
@@ -74,13 +118,13 @@ function haven_enqueue_assets() {
 		'.site-navigation .wp-block-navigation__submenu-container{display:none}'
 	);
 
-	wp_style_add_data( 'oudgoud-style', 'path', $stylesheet_path );
+	wp_style_add_data( 'oudgoud-style', 'path', $stylesheet['path'] );
 
 	wp_enqueue_script(
 		'oudgoud-header-navigation',
-		get_template_directory_uri() . '/js/header-navigation.js',
+		$header_navigation['uri'],
 		array(),
-		$header_navigation_version,
+		$header_navigation['version'],
 		true
 	);
 	wp_script_add_data( 'oudgoud-header-navigation', 'strategy', 'defer' );
@@ -91,14 +135,13 @@ add_action( 'wp_enqueue_scripts', 'haven_enqueue_assets' );
  * Load editor-only compatibility fixes.
  */
 function haven_enqueue_block_editor_assets() {
-	$script_path = get_template_directory() . '/js/block-editor.js';
-	$version     = file_exists( $script_path ) ? (string) filemtime( $script_path ) : wp_get_theme()->get( 'Version' );
+	$script = haven_get_theme_asset( 'js/block-editor.js' );
 
 	wp_enqueue_script(
 		'oudgoud-block-editor',
-		get_template_directory_uri() . '/js/block-editor.js',
+		$script['uri'],
 		array( 'wp-blocks', 'wp-data', 'wp-dom-ready', 'wp-element', 'wp-hooks', 'wp-i18n' ),
-		$version,
+		$script['version'],
 		true
 	);
 }
