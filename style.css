@@ -101,13 +101,21 @@ a:not(.wp-element-button):hover {
 /* Header and navigation. */
 
 header.wp-block-template-part {
-	position: relative;
+	position: sticky;
+	top: 0;
 	z-index: 10;
 	padding-bottom: 3px;
+	transform: translateY(0);
 	background-color: color-mix(in srgb, var(--wp--preset--color--cream) 94%, white);
 	background-image: url("images/border-stitched.png");
 	background-repeat: repeat-x;
 	background-position: left bottom;
+	transition: transform 180ms ease-out;
+	will-change: transform;
+}
+
+header.wp-block-template-part.is-scroll-hidden {
+	transform: translateY(-100%);
 }
 
 .site-header__inner {
@@ -704,7 +712,9 @@ a.header-action:hover,
 }
 
 .single-article__date {
-	margin-block: -1.5rem clamp(1.5rem, 4vw, 3rem);
+	margin-block: -1.5rem var(--wp--preset--spacing--30);
+	color: var(--wp--preset--color--brown);
+	font-weight: 700;
 }
 
 .single-article__image {
@@ -1297,6 +1307,10 @@ footer.wp-block-template-part {
 	}
 
 	.site-header__inner {
+		transition: none;
+	}
+
+	header.wp-block-template-part {
 		transition: none;
 	}
 

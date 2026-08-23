@@ -1,10 +1,132 @@
 /**
- * Keep the header actions inside WordPress's responsive navigation container.
+ * Manage the responsive navigation content and scroll-aware header.
  */
 ( function () {
 	'use strict';
 
+	const HEADER_HIDE_DISTANCE = 32;
+	const HEADER_REVEAL_DISTANCE = 512;
 	let submenuId = 0;
+
+	function mountScrollAwareHeader() {
+		const header = document.querySelector( 'header.wp-block-template-part' );
+
+		if ( ! header || header.dataset.scrollAwareMounted ) {
+			return;
+		}
+
+		header.dataset.scrollAwareMounted = 'true';
+
+		let accumulatedDistance = 0;
+		let animationFrame = null;
+		let lastScrollY = Math.max( window.scrollY, 0 );
+		let scrollDirection = null;
+
+		const showHeader = () => {
+			header.classList.remove( 'is-scroll-hidden' );
+		};
+		const resetScrollTracking = () => {
+			accumulatedDistance = 0;
+			lastScrollY = Math.max( window.scrollY, 0 );
+			scrollDirection = null;
+		};
+		const hasActiveInteraction = () =>
+			Boolean(
+				header.querySelector(
+					':focus-visible, .header-search[open], .wp-block-navigation__responsive-container.is-menu-open'
+				)
+			);
+		const updateHeaderVisibility = () => {
+			animationFrame = null;
+
+			const currentScrollY = Math.max( window.scrollY, 0 );
+			const scrollDelta = currentScrollY - lastScrollY;
+			lastScrollY = currentScrollY;
+
+			if ( currentScrollY <= header.offsetHeight || hasActiveInteraction() ) {
+				showHeader();
+				accumulatedDistance = 0;
+				scrollDirection = null;
+				return;
+			}
+
+			if ( scrollDelta === 0 ) {
+				return;
+			}
+
+			const nextDirection = scrollDelta > 0 ? 'down' : 'up';
+
+			if ( nextDirection !== scrollDirection ) {
+				accumulatedDistance = 0;
+				scrollDirection = nextDirection;
+			}
+
+			accumulatedDistance += Math.abs( scrollDelta );
+
+			if (
+				nextDirection === 'down' &&
+				accumulatedDistance >= HEADER_HIDE_DISTANCE
+			) {
+				header.classList.add( 'is-scroll-hidden' );
+				accumulatedDistance = 0;
+			} else if (
+				nextDirection === 'up' &&
+				accumulatedDistance >= HEADER_REVEAL_DISTANCE
+			) {
+				showHeader();
+				accumulatedDistance = 0;
+			}
+		};
+		const scheduleHeaderUpdate = () => {
+			if ( animationFrame === null ) {
+				animationFrame = window.requestAnimationFrame(
+					updateHeaderVisibility
+				);
+			}
+		};
+		const revealForInteraction = () => {
+			showHeader();
+			resetScrollTracking();
+		};
+
+		const responsiveContainer = header.querySelector(
+			'.wp-block-navigation__responsive-container'
+		);
+
+		if ( responsiveContainer ) {
+			const revealForOpenMenu = new MutationObserver( () => {
+				if ( responsiveContainer.classList.contains( 'is-menu-open' ) ) {
+					revealForInteraction();
+				} else {
+					resetScrollTracking();
+				}
+			} );
+
+			revealForOpenMenu.observe( responsiveContainer, {
+				attributeFilter: [ 'class' ],
+				attributes: true,
+			} );
+		}
+
+		header.addEventListener( 'focusin', revealForInteraction );
+		header.addEventListener(
+			'toggle',
+			() => {
+				if ( hasActiveInteraction() ) {
+					revealForInteraction();
+				} else {
+					resetScrollTracking();
+				}
+			},
+			true
+		);
+		window.addEventListener( 'resize', resetScrollTracking, {
+			passive: true,
+		} );
+		window.addEventListener( 'scroll', scheduleHeaderUpdate, {
+			passive: true,
+		} );
+	}
 
 	function mountMobileSubmenuToggles( navigation ) {
 		navigation
@@ -140,11 +262,16 @@
 		} );
 	}
 
+	function mountHeader() {
+		mountHeaderActions();
+		mountScrollAwareHeader();
+	}
+
 	if ( document.readyState === 'loading' ) {
-		document.addEventListener( 'DOMContentLoaded', mountHeaderActions, {
+		document.addEventListener( 'DOMContentLoaded', mountHeader, {
 			once: true,
 		} );
 	} else {
-		mountHeaderActions();
+		mountHeader();
 	}
 } )();
