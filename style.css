@@ -29,10 +29,6 @@ html {
 	box-sizing: inherit;
 }
 
-body {
-	margin: 0;
-}
-
 .wp-site-blocks {
 	display: flex;
 	min-height: 100vh;
@@ -63,19 +59,6 @@ a:not(.wp-element-button):hover {
 :where(a, button, input, textarea, select):focus-visible {
 	outline: 3px solid var(--wp--preset--color--brand);
 	outline-offset: 3px;
-}
-
-.screen-reader-text {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	margin: -1px;
-	overflow: hidden;
-	clip: rect(0, 0, 0, 0);
-	clip-path: inset(50%);
-	white-space: nowrap;
-	border: 0;
 }
 
 .skip-link:focus {
@@ -293,11 +276,6 @@ a.header-action:hover,
 	width: auto;
 	height: auto;
 	min-width: 0;
-	padding: 0.7rem 1rem;
-	background: var(--wp--preset--color--brand);
-	color: var(--wp--preset--color--white);
-	border: 0;
-	border-radius: 0.25rem;
 }
 
 .header-action svg {
@@ -846,10 +824,6 @@ a.header-action:hover,
 	border-radius: var(--oudgoud-radius);
 }
 
-.entry-content {
-	font-size: var(--wp--preset--font-size--medium);
-}
-
 .entry-content > :is(.wp-block-image, .wp-block-cover, .wp-block-columns).alignfull {
 	width: 100cqi;
 	max-width: none;
@@ -1031,10 +1005,13 @@ textarea {
 }
 
 :where(button, input[type="button"], input[type="reset"], input[type="submit"], .wp-element-button) {
-	padding: 0.7rem 1rem;
 	cursor: pointer;
-	border: 0;
 	transition: background-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+:where(button, input[type="button"], input[type="reset"], input[type="submit"]):not(.wp-element-button) {
+	padding: 0.7rem 1rem;
+	border: 0;
 }
 
 :where(button, input[type="button"], input[type="reset"], input[type="submit"]):hover {

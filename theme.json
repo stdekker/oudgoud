@@ -232,6 +232,14 @@
 					"background": "var:preset|color|brand",
 					"text": "var:preset|color|white"
 				},
+				"spacing": {
+					"padding": {
+						"top": "0.7rem",
+						"right": "1rem",
+						"bottom": "0.7rem",
+						"left": "1rem"
+					}
+				},
 				"typography": {
 					"fontFamily": "var:preset|font-family|arvo",
 					"fontWeight": "700"
@@ -287,11 +295,6 @@
 				"typography": {
 					"fontFamily": "var:preset|font-family|arvo",
 					"fontSize": "var:preset|font-size|small"
-				}
-			},
-			"core/post-excerpt": {
-				"typography": {
-					"fontSize": "var:preset|font-size|medium"
 				}
 			},
 			"core/query-pagination": {
