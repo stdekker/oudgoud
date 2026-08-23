@@ -316,13 +316,6 @@
 			"title": "Landingspagina"
 		},
 		{
-			"name": "onecolumn-page",
-			"postTypes": [
-				"page"
-			],
-			"title": "Een kolom"
-		},
-		{
 			"name": "template-news-page",
 			"postTypes": [
 				"page"
