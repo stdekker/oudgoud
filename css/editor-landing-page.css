@@ -1,0 +1,27 @@
+/* Identify the administrative page title in the landing-page editor. */
+
+.is-oudgoud-landing-page .editor-post-title {
+	padding: 0.75rem 1rem;
+	background: color-mix(in srgb, var(--wp--preset--color--brown) 5%, white);
+	color: color-mix(in srgb, var(--wp--preset--color--brown) 70%, white);
+	border: 1px dashed color-mix(in srgb, var(--wp--preset--color--brown) 35%, transparent);
+	border-radius: 0.25rem;
+	font-family: var(--wp--preset--font-family--system);
+	font-size: clamp(1.125rem, 2vw, 1.5rem);
+	font-weight: 600;
+	line-height: 1.4;
+	text-shadow: none;
+}
+
+.is-oudgoud-landing-page .editor-visual-editor__post-title-wrapper::after {
+	display: block;
+	box-sizing: border-box;
+	width: min(calc(100% - 2rem), var(--wp--style--global--content-size));
+	margin: 0.35rem auto 0;
+	color: color-mix(in srgb, var(--wp--preset--color--brown) 65%, white);
+	content: "Alleen voor beheerder — niet zichtbaar op de website";
+	font-family: var(--wp--preset--font-family--system);
+	font-size: 0.75rem;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+}

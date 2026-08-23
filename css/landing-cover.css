@@ -1,0 +1,72 @@
+/* Landing-page introduction. */
+
+.site-main--landing {
+	padding-block-start: 0;
+}
+
+.landing-page__content > .landing-introduction:first-child {
+	width: 100cqi;
+	max-width: none;
+	min-height: clamp(24rem, 47.619vw, 42rem) !important;
+	margin-block-start: 0;
+	margin-inline: calc(50% - 50cqi);
+	border-radius: 0;
+}
+
+.is-oudgoud-landing-page .landing-introduction {
+	min-height: 42rem !important;
+}
+
+.landing-introduction.is-style-small-panorama {
+	min-height: 32.5rem !important;
+}
+
+.landing-introduction__content {
+	--wp--style--global--content-size: var(--wp--style--global--wide-size) !important;
+
+	width: min(calc(100% - 2rem), var(--wp--style--global--wide-size));
+	margin-inline: auto;
+	color: var(--wp--preset--color--white);
+	text-align: center;
+	text-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.72);
+}
+
+.landing-introduction__content > :not(.landing-introduction__byline) {
+	width: 100%;
+	max-width: var(--wp--style--global--wide-size) !important;
+}
+
+.landing-introduction :where(.wp-block-cover__inner-container, .landing-introduction__content) > :last-child {
+	margin-block-end: 0;
+}
+
+.landing-introduction__title {
+	margin-block: 0;
+	color: inherit;
+	font-size: clamp(2.5rem, 6vw, 4.75rem);
+}
+
+.landing-introduction__byline {
+	max-width: 42rem;
+	margin-inline: auto;
+	font-family: var(--wp--preset--font-family--arvo);
+}
+
+.landing-introduction__actions {
+	margin-block-start: clamp(1.25rem, 3vw, 2rem);
+	text-shadow: none;
+}
+
+@media (max-width: 720px) {
+	.landing-introduction {
+		padding-block: clamp(3.5rem, 12vw, 5rem);
+	}
+
+	.is-oudgoud-landing-page .landing-introduction {
+		min-height: 24rem !important;
+	}
+
+	.landing-introduction.is-style-small-panorama {
+		min-height: 20rem !important;
+	}
+}

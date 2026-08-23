@@ -1,0 +1,36 @@
+/* Comments. */
+
+.comments-area {
+	margin-block-start: clamp(2.5rem, 7vw, 5rem);
+}
+
+.wp-block-comment-template {
+	padding: 0;
+	list-style: none;
+}
+
+.comment-card {
+	padding: 1.25rem;
+	background: var(--wp--preset--color--panel);
+	border: 1px solid var(--oudgoud-border);
+	border-radius: 0.5rem;
+}
+
+.comment-card__meta {
+	font-family: var(--wp--preset--font-family--arvo);
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 700;
+}
+
+@media (max-width: 720px) {
+	.comments-area {
+		width: calc(100% - 2rem);
+		margin-inline: auto;
+	}
+}
+
+@media print {
+	.comments-area {
+		display: none;
+	}
+}

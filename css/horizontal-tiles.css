@@ -1,0 +1,71 @@
+/* Linked tile pattern. */
+
+.horizontal-tiles {
+	gap: var(--wp--preset--spacing--20);
+	padding-block: 0.25rem 0.75rem;
+}
+
+.horizontal-tile {
+	position: relative;
+	display: flex;
+	min-height: 12rem;
+	padding: clamp(1.25rem, 3vw, 2rem);
+	flex-direction: column;
+	justify-content: center;
+	border-radius: var(--oudgoud-radius);
+	box-shadow: var(--oudgoud-card-elevation);
+	scroll-snap-align: start;
+}
+
+.horizontal-tile__title,
+.horizontal-tile__description {
+	margin: 0;
+}
+
+.horizontal-tile__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.horizontal-tile__title a::after {
+	position: absolute;
+	inset: 0;
+	content: "";
+}
+
+.horizontal-tile__description {
+	margin-block-start: 0.5rem;
+}
+
+.horizontal-tile:hover {
+	box-shadow: var(--oudgoud-card-elevation-hover);
+}
+
+.horizontal-tile:focus-within {
+	outline: 3px solid currentColor;
+	outline-offset: -0.5rem;
+}
+
+.editor-styles-wrapper .horizontal-tile__title a::after {
+	content: none;
+}
+
+@media (max-width: 720px) {
+	.horizontal-tiles {
+		padding: 0.75rem 1rem 1.5rem;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scroll-padding-inline: 1rem;
+		scroll-snap-type: inline proximity;
+	}
+
+	.wp-block-columns.horizontal-tiles > .wp-block-column.horizontal-tile {
+		width: clamp(15rem, 78vw, 18rem);
+		flex: 0 0 clamp(15rem, 78vw, 18rem);
+		box-shadow: var(--oudgoud-mobile-scroll-elevation);
+	}
+
+	.wp-block-columns.horizontal-tiles > .wp-block-column.horizontal-tile:hover {
+		box-shadow: var(--oudgoud-mobile-scroll-elevation-hover);
+	}
+}

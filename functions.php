@@ -11,7 +11,8 @@ if ( ! isset( $content_width ) ) {
  * Register theme features shared by the front end and block editors.
  */
 function haven_setup() {
-	$editor_stylesheet = haven_get_theme_asset( 'style.css' );
+	$editor_stylesheet    = haven_get_theme_asset( 'style.css' );
+	$landing_editor_style = haven_get_theme_asset( 'css/editor-landing-page.css' );
 
 	load_theme_textdomain( 'oudgoud', get_template_directory() . '/languages' );
 
@@ -24,7 +25,10 @@ function haven_setup() {
 	remove_theme_support( 'core-block-patterns' );
 
 	add_editor_style(
-		add_query_arg( 'ver', $editor_stylesheet['version'], $editor_stylesheet['uri'] )
+		array(
+			add_query_arg( 'ver', $editor_stylesheet['version'], $editor_stylesheet['uri'] ),
+			add_query_arg( 'ver', $landing_editor_style['version'], $landing_editor_style['uri'] ),
+		)
 	);
 
 	add_image_size( 'featured-full', 720, 9999 );
@@ -121,6 +125,70 @@ function haven_register_block_styles() {
 add_action( 'init', 'haven_register_block_styles' );
 
 /**
+ * Load component styles only when their owning blocks are rendered.
+ */
+function haven_register_block_stylesheets() {
+	$block_stylesheets = array(
+		'core/navigation' => array(
+			'handle' => 'oudgoud-navigation',
+			'file'   => 'css/navigation.css',
+			'inline' => true,
+		),
+		'core/query'      => array(
+			'handle' => 'oudgoud-news-query',
+			'file'   => 'css/news-query.css',
+		),
+		'core/columns'    => array(
+			'handle' => 'oudgoud-horizontal-tiles',
+			'file'   => 'css/horizontal-tiles.css',
+		),
+		'core/cover'      => array(
+			'handle' => 'oudgoud-landing-cover',
+			'file'   => 'css/landing-cover.css',
+		),
+		'core/comments'   => array(
+			'handle' => 'oudgoud-comments',
+			'file'   => 'css/comments.css',
+		),
+	);
+
+	foreach ( $block_stylesheets as $block_name => $stylesheet ) {
+		$asset = haven_get_theme_asset( $stylesheet['file'] );
+		$args  = array(
+			'handle' => $stylesheet['handle'],
+			'src'    => $asset['uri'],
+			'deps'   => array(),
+			'ver'    => $asset['version'],
+			'path'   => $asset['path'],
+		);
+
+		if ( ! empty( $stylesheet['inline'] ) ) {
+			wp_register_style( $stylesheet['handle'], false, array(), $asset['version'] );
+
+			// Navigation is above the fold on every current template. Keep its
+			// conditional ownership without adding another blocking request.
+			if ( is_readable( $asset['path'] ) ) {
+				$style = file_get_contents( $asset['path'] );
+
+				if ( false !== $style ) {
+					wp_add_inline_style( $stylesheet['handle'], $style );
+				}
+			}
+
+			$args = array(
+				'handle' => $stylesheet['handle'],
+			);
+		}
+
+		wp_enqueue_block_style(
+			$block_name,
+			$args
+		);
+	}
+}
+add_action( 'init', 'haven_register_block_stylesheets' );
+
+/**
  * Load the theme stylesheet on top of Global Styles.
  */
 function haven_enqueue_assets() {
@@ -132,12 +200,6 @@ function haven_enqueue_assets() {
 		$stylesheet['uri'],
 		array(),
 		$stylesheet['version']
-	);
-
-	// Prevent server-rendered submenu lists from painting before Navigation CSS.
-	wp_add_inline_style(
-		'oudgoud-style',
-		'.site-navigation .wp-block-navigation__submenu-container{display:none}'
 	);
 
 	wp_style_add_data( 'oudgoud-style', 'path', $stylesheet['path'] );
