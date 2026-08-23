@@ -1,14 +1,148 @@
 /**
  * Oudgoud block-editor enhancements and compatibility fixes.
  */
-( function ( blocks, data, domReady, element, hooks ) {
+( function ( blocks, data, domReady, element, hooks, i18n ) {
 	'use strict';
 
 	const LANDING_TEMPLATE = 'landing-page';
 	const LANDING_INTRODUCTION_CLASS = 'landing-introduction';
 	const LANDING_EDITOR_CLASS = 'is-oudgoud-landing-page';
+	const NEWS_CARDS_VARIATION = 'oudgoud/news-cards';
 	const { createElement, useCallback } = element;
-	const { createBlock } = blocks;
+	const { createBlock, registerBlockVariation } = blocks;
+	const { __ } = i18n;
+
+	/**
+	 * Register a focused Query Loop variation for reusable news cards.
+	 */
+	function registerNewsCardsVariation() {
+		registerBlockVariation( 'core/query', {
+			name: NEWS_CARDS_VARIATION,
+			title: __( 'Nieuwskaarten', 'oudgoud' ),
+			description: __(
+				'Toon recente nieuwsberichten als kaarten.',
+				'oudgoud'
+			),
+			keywords: [
+				__( 'nieuws', 'oudgoud' ),
+				__( 'berichten', 'oudgoud' ),
+				__( 'kaarten', 'oudgoud' ),
+			],
+			icon: 'grid-view',
+			attributes: {
+				align: 'wide',
+				className: 'news-cards',
+				namespace: NEWS_CARDS_VARIATION,
+				query: {
+					author: '',
+					exclude: [],
+					excludeCurrent: null,
+					format: [],
+					inherit: false,
+					offset: 0,
+					order: 'desc',
+					orderBy: 'date',
+					pages: 0,
+					parents: [],
+					perPage: 3,
+					postType: 'post',
+					search: '',
+					sticky: '',
+					taxQuery: null,
+				},
+			},
+			allowedControls: [ 'postCount', 'taxQuery' ],
+			innerBlocks: [
+				[
+					'core/post-template',
+					{
+						layout: {
+							columnCount: 3,
+							type: 'grid',
+						},
+					},
+					[
+						[
+							'core/group',
+							{
+								className: 'news-card news-card--compact',
+								layout: { type: 'default' },
+								tagName: 'article',
+							},
+							[
+								[
+									'core/post-featured-image',
+									{
+										aspectRatio: '3/2',
+										className: 'news-card__image',
+										isLink: true,
+										sizeSlug: 'featured-short',
+									},
+								],
+								[
+									'core/group',
+									{
+										className: 'news-card__body',
+										layout: { type: 'default' },
+									},
+									[
+										[
+											'core/post-title',
+											{
+												className: 'news-card__title',
+												isLink: true,
+												level: 3,
+											},
+										],
+										[
+											'core/group',
+											{
+												className: 'news-card__meta',
+												layout: { type: 'default' },
+											},
+											[
+												[
+													'core/post-date',
+													{
+														className: 'news-card__date',
+														format: 'j F Y',
+													},
+												],
+												[
+													'core/post-terms',
+													{
+														className: 'news-card__categories',
+														term: 'category',
+													},
+												],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+				],
+				[
+					'core/query-no-results',
+					{},
+					[
+						[
+							'core/paragraph',
+							{
+								content: __(
+									'Er zijn momenteel geen nieuwsberichten.',
+									'oudgoud'
+								),
+							},
+						],
+					],
+				],
+			],
+			isActive: [ 'namespace' ],
+			scope: [ 'inserter' ],
+		} );
+	}
 
 	/**
 	 * Create the editable introduction used by the landing-page template.
@@ -258,6 +392,7 @@
 	);
 
 	domReady( () => {
+		registerNewsCardsVariation();
 		seedLandingIntroduction();
 		initializeLandingEditorClass();
 	} );
@@ -266,5 +401,6 @@
 	window.wp.data,
 	window.wp.domReady,
 	window.wp.element,
-	window.wp.hooks
+	window.wp.hooks,
+	window.wp.i18n
 );

@@ -40,10 +40,15 @@ function haven_register_block_styles() {
 		'name'  => 'small-panorama',
 		'label' => __( 'Klein panorama', 'oudgoud' ),
 	);
+	$mobile_scroll_style = array(
+		'name'  => 'mobile-scroll',
+		'label' => __( 'Mobiel scrollen', 'oudgoud' ),
+	);
 
 	register_block_style( 'core/image', $torn_paper_style );
 	register_block_style( 'core/cover', $torn_paper_style );
 	register_block_style( 'core/cover', $small_panorama_style );
+	register_block_style( 'core/query', $mobile_scroll_style );
 }
 add_action( 'init', 'haven_register_block_styles' );
 
@@ -86,7 +91,7 @@ function haven_enqueue_block_editor_assets() {
 	wp_enqueue_script(
 		'oudgoud-block-editor',
 		get_template_directory_uri() . '/js/block-editor.js',
-		array( 'wp-blocks', 'wp-data', 'wp-dom-ready', 'wp-element', 'wp-hooks' ),
+		array( 'wp-blocks', 'wp-data', 'wp-dom-ready', 'wp-element', 'wp-hooks', 'wp-i18n' ),
 		$version,
 		true
 	);

@@ -551,6 +551,7 @@ a.header-action:hover,
 	flex-direction: column;
 	justify-content: center;
 	padding: clamp(1.25rem, 3vw, 2.25rem);
+	padding-block-start: clamp(1rem, 2vw, 1.5rem);
 }
 
 .news-card__title {
@@ -576,6 +577,127 @@ a.header-action:hover,
 
 .news-card__date a {
 	text-decoration: none;
+}
+
+.news-card__meta {
+	padding-block-start: 0.55rem;
+}
+
+.news-card__meta .news-card__date,
+.news-card__meta .news-card__categories {
+	margin-block-start: 0;
+}
+
+.news-card__meta .news-card__categories {
+	margin-block-start: 0.5rem;
+}
+
+.news-card--compact .news-card__meta {
+	margin-block-start: auto;
+	padding-block-start: 1rem;
+}
+
+.news-list .news-card__meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5rem 1rem;
+}
+
+.news-list .news-card__categories {
+	margin-block-start: 0;
+}
+
+.news-card__categories {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.4rem;
+	margin-block-start: 0.75rem;
+	font-family: var(--wp--preset--font-family--arvo);
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.news-card__categories a {
+	position: relative;
+	z-index: 2;
+	display: inline-flex;
+	padding: 0.25rem 0.55rem;
+	background: transparent;
+	color: var(--wp--preset--color--gold);
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--gold) 70%, transparent);
+	border-radius: 999px;
+	text-decoration: none;
+}
+
+.news-card__categories a:hover {
+	color: var(--wp--preset--color--brand-dark);
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--brand-dark) 70%, transparent);
+}
+
+.news-card__categories .wp-block-post-terms__separator {
+	display: none;
+}
+
+/* Reusable news cards Query variation. */
+
+.news-cards .wp-block-post-template {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: clamp(1rem, 2.5vw, 1.75rem);
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+.news-cards .wp-block-post {
+	min-width: 0;
+	margin: 0;
+}
+
+.news-card--compact {
+	grid-template-columns: 1fr;
+	grid-template-rows: auto 1fr;
+	min-height: 0;
+	height: 100%;
+}
+
+.news-card--compact .news-card__image {
+	width: 100%;
+	height: auto;
+	aspect-ratio: 3 / 2;
+}
+
+.news-card--compact:not(:has(.news-card__image))::before {
+	display: block;
+	aspect-ratio: 3 / 2;
+	background-color: var(--wp--preset--color--cream);
+	background-image: linear-gradient(
+		rgba(255, 249, 222, 0.15),
+		rgba(255, 249, 222, 0.15)
+	), url("images/background_1080.jpg");
+	background-position: center;
+	background-size: cover;
+	content: "";
+}
+
+.news-card--compact .news-card__body {
+	justify-content: flex-start;
+	padding: 0.75rem clamp(1rem, 2.5vw, 1.5rem) clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.news-card--compact .news-card__title {
+	font-size: clamp(1.2rem, 2vw, 1.5rem);
+}
+
+.news-cards .news-card:focus-within {
+	outline: 3px solid var(--wp--preset--color--brand-dark);
+	outline-offset: -0.35rem;
+}
+
+.editor-styles-wrapper .news-cards .news-card__title a::after {
+	content: none;
 }
 
 .news-card__excerpt {
@@ -740,7 +862,7 @@ a.header-action:hover,
 		margin-inline: max(-4rem, calc(50% - 50cqi + 8rem)) !important;
 	}
 
-	.entry-content > .wp-block-columns.alignwide {
+	.entry-content > :is(.wp-block-columns, .wp-block-query).alignwide {
 		width: min(var(--wp--style--global--wide-size), calc(100cqi - 2rem));
 		max-width: none;
 		margin-inline: max(
@@ -1097,6 +1219,16 @@ footer.wp-block-template-part {
 		margin-inline: auto;
 	}
 
+	.single-article__date {
+		width: calc(100% - 2rem);
+		margin-inline: auto;
+	}
+
+	.comments-area {
+		width: calc(100% - 2rem);
+		margin-inline: auto;
+	}
+
 	.site-header__inner {
 		min-height: 5.5rem;
 		flex-wrap: nowrap;
@@ -1153,6 +1285,35 @@ footer.wp-block-template-part {
 
 	.news-card__body {
 		padding: 1.25rem;
+	}
+
+	.news-cards .wp-block-post-template {
+		grid-template-columns: 1fr;
+	}
+
+	.news-cards.is-style-mobile-scroll .wp-block-post-template {
+		display: flex;
+		width: calc(100% + 2rem);
+		padding: 1rem 1rem 1.5rem;
+		margin-inline: -1rem;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scroll-padding-inline: 1rem;
+		scroll-snap-type: inline proximity;
+	}
+
+	.news-cards.is-style-mobile-scroll .wp-block-post {
+		width: clamp(15rem, 78vw, 20rem);
+		flex: 0 0 clamp(15rem, 78vw, 20rem);
+		scroll-snap-align: start;
+	}
+
+	.news-cards.is-style-mobile-scroll .news-card {
+		box-shadow: 0 0.35rem 0.75rem rgba(68, 34, 0, 0.14);
+	}
+
+	.news-cards.is-style-mobile-scroll .news-card:hover {
+		box-shadow: 0 0.45rem 1rem rgba(68, 34, 0, 0.18);
 	}
 
 	.post-navigation {
