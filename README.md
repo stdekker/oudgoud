@@ -26,7 +26,7 @@ fixed header or footer changes.
 - The Core Archives block with class `news-date-selector` replaces pagination
   below the main news feed and remains available on monthly archive pages.
 - `js/header-navigation.js` owns header scrolling, the mobile overlay, submenu
-  toggles, action placement, and search reset behavior.
+  toggles, the hidden mobile action copy, and search reset behavior.
 - `js/landing-page-editor.js` seeds a landing introduction only for a new page
   or a transition to the landing template. It must never reinsert content an
   editor deliberately removed.
@@ -35,9 +35,17 @@ fixed header or footer changes.
   regression test required before removal.
 - `patterns/` contains the only reusable theme-owned block markup.
 
-The mobile Navigation breakpoint is `599px`. Header actions are rendered once
-beside the desktop menu and moved into WordPress's native overlay on mobile.
-Keep this single ownership model when changing the header.
+The mobile Navigation breakpoint is `599px`. Header actions remain in their
+server-rendered desktop position. JavaScript creates a hidden copy inside
+WordPress's native overlay, so initialization never moves visible controls.
+Crossing back to the desktop breakpoint closes an open overlay. Keep the
+server-rendered group as the single source of contact content. The mobile
+header reserves separate grid columns for the logo and menu control so neither
+depends on JavaScript or the other's rendered width. The same CSS dimensions
+position the mobile overlay and its close control; do not reintroduce runtime
+geometry measurement. Header hover styles are enabled only after non-touch
+pointer input, preventing a cursor retained over a contact action from painting
+its hover state during a page reload.
 
 ## Releases and checks
 

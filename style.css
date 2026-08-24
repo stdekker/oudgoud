@@ -4,7 +4,7 @@ Theme URI: https://www.janvanhoof.nl/
 Description: Modern block theme for Scouting Jan van Hoof Groep in Gouda.
 Author: Stijn Dekker
 Author URI: https://stijndekker.nl/
-Version: 2.0.5
+Version: 2.0.9
 License: GNU General Public License v3.0
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Text Domain: oudgoud
@@ -89,10 +89,12 @@ a:not(.wp-element-button):hover {
 /* Header shell. */
 
 header.wp-block-template-part {
+	--oudgoud-header-stitch-size: 3px;
+
 	position: sticky;
 	top: 0;
 	z-index: 10;
-	padding-bottom: 3px;
+	padding-bottom: var(--oudgoud-header-stitch-size);
 	transform: translateY(0);
 	background-color: color-mix(in srgb, var(--wp--preset--color--cream) 94%, white);
 	background-image: url("images/border-stitched.png");
@@ -107,7 +109,8 @@ header.wp-block-template-part.is-scroll-hidden {
 }
 
 .site-header__inner {
-	--oudgoud-header-transition-duration: 160ms;
+	--oudgoud-mobile-header-height: 5.5rem;
+	--oudgoud-mobile-menu-control-size: 2.75rem;
 
 	position: relative;
 	width: min(calc(100% - 2rem), var(--wp--style--global--wide-size));
@@ -115,7 +118,6 @@ header.wp-block-template-part.is-scroll-hidden {
 	margin-inline: auto;
 	padding-block: 1rem;
 	gap: 1.5rem 2.5rem;
-	transition: padding-block-end var(--oudgoud-header-transition-duration) ease-out;
 }
 
 .site-brand {
@@ -597,7 +599,7 @@ footer.wp-block-template-part {
 	}
 
 	.site-header__inner {
-		min-height: 5.5rem;
+		min-height: var(--oudgoud-mobile-header-height);
 		flex-wrap: nowrap;
 		gap: 0.5rem;
 	}
@@ -629,6 +631,28 @@ footer.wp-block-template-part {
 
 	.site-footer__social-links {
 		justify-content: center;
+	}
+}
+
+@media (max-width: 599px) {
+	.wp-block-group.site-header__inner {
+		display: grid;
+		height: var(--oudgoud-mobile-header-height);
+		grid-template-columns: minmax(0, 1fr) var(--oudgoud-mobile-menu-control-size);
+		align-items: center;
+	}
+
+	.site-brand {
+		width: min(12rem, 52vw);
+	}
+
+	.site-brand a {
+		width: 100%;
+	}
+
+	.site-header__controls {
+		width: var(--oudgoud-mobile-menu-control-size);
+		justify-self: end;
 	}
 }
 
