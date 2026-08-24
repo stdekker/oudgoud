@@ -185,7 +185,7 @@
 	background-image: linear-gradient(
 		rgba(255, 249, 222, 0.15),
 		rgba(255, 249, 222, 0.15)
-	), url("../images/background_1080.jpg");
+	), url("../images/news-card-fallback.jpg");
 	background-position: center;
 	background-size: cover;
 	content: "";

@@ -4,6 +4,11 @@
  * Slug: oudgoud/news-card
  * Inserter: no
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	http_response_code( 403 );
+	exit;
+}
 ?>
 
 <!-- wp:group {"tagName":"article","className":"news-card","layout":{"type":"default"}} -->

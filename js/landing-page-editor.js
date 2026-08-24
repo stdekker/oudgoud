@@ -143,49 +143,87 @@
 	 */
 	function initializeLandingEditorClass() {
 		let editorCanvas;
-
-		function syncLandingEditorClass() {
-			const editor = data.select( 'core/editor' );
-			const isLandingPage =
-				editor &&
-				editor.getCurrentPostType() === 'page' &&
-				editor.getEditedPostAttribute( 'template' ) === LANDING_TEMPLATE;
-
-			document.body.classList.toggle(
-				LANDING_EDITOR_CLASS,
-				isLandingPage
-			);
-
-			const canvasBody = editorCanvas?.contentDocument?.body;
-
-			if ( canvasBody ) {
-				canvasBody.classList.toggle(
-					LANDING_EDITOR_CLASS,
-					isLandingPage
-				);
-			}
-		}
+		let lastCanvasBody;
+		let lastIsLandingPage;
 
 		function connectEditorCanvas() {
-			editorCanvas = document.querySelector(
+			const nextEditorCanvas = document.querySelector(
 				'iframe[name="editor-canvas"]'
 			);
+
+			if ( nextEditorCanvas === editorCanvas ) {
+				return Boolean( editorCanvas );
+			}
+
+			if ( editorCanvas ) {
+				editorCanvas.removeEventListener(
+					'load',
+					handleEditorCanvasLoad
+				);
+			}
+
+			editorCanvas = nextEditorCanvas;
+			lastCanvasBody = undefined;
 
 			if ( ! editorCanvas ) {
 				return false;
 			}
 
-			editorCanvas.addEventListener( 'load', syncLandingEditorClass );
-			syncLandingEditorClass();
+			editorCanvas.addEventListener( 'load', handleEditorCanvasLoad );
 			return true;
+		}
+
+		function syncLandingEditorClass( force = false ) {
+			if ( ! editorCanvas?.isConnected ) {
+				connectEditorCanvas();
+			}
+
+			const editor = data.select( 'core/editor' );
+			const isLandingPage = Boolean(
+				editor &&
+				editor.getCurrentPostType() === 'page' &&
+				editor.getEditedPostAttribute( 'template' ) === LANDING_TEMPLATE
+			);
+
+			if ( force || isLandingPage !== lastIsLandingPage ) {
+				document.body.classList.toggle(
+					LANDING_EDITOR_CLASS,
+					isLandingPage
+				);
+			}
+
+			const canvasBody = editorCanvas?.contentDocument?.body;
+
+			if (
+				canvasBody &&
+				( force ||
+					isLandingPage !== lastIsLandingPage ||
+					canvasBody !== lastCanvasBody )
+			) {
+				canvasBody.classList.toggle(
+					LANDING_EDITOR_CLASS,
+					isLandingPage
+				);
+			}
+
+			lastCanvasBody = canvasBody;
+			lastIsLandingPage = isLandingPage;
+		}
+
+		function handleEditorCanvasLoad() {
+			lastCanvasBody = undefined;
+			syncLandingEditorClass( true );
 		}
 
 		data.subscribe( syncLandingEditorClass );
 
-		if ( ! connectEditorCanvas() ) {
+		if ( connectEditorCanvas() ) {
+			syncLandingEditorClass( true );
+		} else {
 			const observer = new MutationObserver( () => {
 				if ( connectEditorCanvas() ) {
 					observer.disconnect();
+					syncLandingEditorClass( true );
 				}
 			} );
 

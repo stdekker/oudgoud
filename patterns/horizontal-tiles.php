@@ -6,6 +6,11 @@
  * Viewport Width: 1200
  * Description: Drie gekleurde, horizontaal geplaatste tegels met links naar andere pagina's.
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	http_response_code( 403 );
+	exit;
+}
 ?>
 
 <!-- wp:columns {"align":"wide","isStackedOnMobile":false,"className":"horizontal-tiles"} -->

@@ -11,14 +11,18 @@
 	 * wide or full alignment. WordPress core clears all four attributes when
 	 * the block mounts; only width and height should be cleared.
 	 *
+	 * Re-test after upgrading beyond WordPress 7.1: set an Image block's crop,
+	 * switch it to wide or full alignment, save, and reload. Remove this filter
+	 * once Core preserves aspectRatio and scale without it.
+	 *
 	 * @param {Function} BlockEdit Original block edit component.
 	 * @return {Function} Wrapped block edit component.
 	 */
 	function preserveWideImageCrop( BlockEdit ) {
-		return function OudgoudImageEdit( props ) {
-			const isWideImage =
-				props.name === 'core/image' &&
-				[ 'wide', 'full' ].includes( props.attributes.align );
+		function OudgoudImageEdit( props ) {
+			const isWideImage = [ 'wide', 'full' ].includes(
+				props.attributes.align
+			);
 
 			const setAttributes = useCallback(
 				( nextAttributes ) => {
@@ -57,6 +61,14 @@
 				...props,
 				setAttributes,
 			} );
+		}
+
+		return function OudgoudBlockEdit( props ) {
+			if ( props.name !== 'core/image' ) {
+				return createElement( BlockEdit, props );
+			}
+
+			return createElement( OudgoudImageEdit, props );
 		};
 	}
 

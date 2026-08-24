@@ -3,6 +3,11 @@
  * Oudgoud block theme setup.
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	http_response_code( 403 );
+	exit;
+}
+
 if ( ! isset( $content_width ) ) {
 	$content_width = 720;
 }
@@ -31,7 +36,6 @@ function haven_setup() {
 		)
 	);
 
-	add_image_size( 'featured-full', 720, 9999 );
 	add_image_size( 'featured-short', 360, 240, true );
 }
 add_action( 'after_setup_theme', 'haven_setup' );
@@ -72,6 +76,45 @@ function haven_get_theme_asset( $relative_path ) {
 		'version' => $version,
 	);
 }
+
+/**
+ * Provide theme icons until a Site Icon is configured in WordPress.
+ */
+function haven_output_fallback_site_icons() {
+	if ( has_site_icon() ) {
+		return;
+	}
+
+	$icons = array(
+		array(
+			'rel'   => 'icon',
+			'file'  => 'images/favicon-32.png',
+			'sizes' => '32x32',
+		),
+		array(
+			'rel'   => 'icon',
+			'file'  => 'images/favicon-192.png',
+			'sizes' => '192x192',
+		),
+		array(
+			'rel'   => 'apple-touch-icon',
+			'file'  => 'images/apple-touch-icon.png',
+			'sizes' => '180x180',
+		),
+	);
+
+	foreach ( $icons as $icon ) {
+		$asset = haven_get_theme_asset( $icon['file'] );
+
+		printf(
+			'<link rel="%1$s" href="%2$s" sizes="%3$s" type="image/png">' . "\n",
+			esc_attr( $icon['rel'] ),
+			esc_url( add_query_arg( 'ver', $asset['version'], $asset['uri'] ) ),
+			esc_attr( $icon['sizes'] )
+		);
+	}
+}
+add_action( 'wp_head', 'haven_output_fallback_site_icons', 2 );
 
 /**
  * Preload fonts used by the above-the-fold header and page title.
@@ -132,7 +175,6 @@ function haven_register_block_stylesheets() {
 		'core/navigation' => array(
 			'handle' => 'oudgoud-navigation',
 			'file'   => 'css/navigation.css',
-			'inline' => true,
 		),
 		'core/query'      => array(
 			'handle' => 'oudgoud-news-query',
@@ -161,24 +203,6 @@ function haven_register_block_stylesheets() {
 			'ver'    => $asset['version'],
 			'path'   => $asset['path'],
 		);
-
-		if ( ! empty( $stylesheet['inline'] ) ) {
-			wp_register_style( $stylesheet['handle'], false, array(), $asset['version'] );
-
-			// Navigation is above the fold on every current template. Keep its
-			// conditional ownership without adding another blocking request.
-			if ( is_readable( $asset['path'] ) ) {
-				$style = file_get_contents( $asset['path'] );
-
-				if ( false !== $style ) {
-					wp_add_inline_style( $stylesheet['handle'], $style );
-				}
-			}
-
-			$args = array(
-				'handle' => $stylesheet['handle'],
-			);
-		}
 
 		wp_enqueue_block_style(
 			$block_name,
