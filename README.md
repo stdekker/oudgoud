@@ -23,6 +23,8 @@ fixed header or footer changes.
   fallback icons. Setting a Site Icon in WordPress automatically replaces them.
 - `style.css` contains global layout and saved-content compatibility styles;
   component styles live in `css/`.
+- The Core Archives block with class `news-date-selector` replaces pagination
+  below the main news feed and remains available on monthly archive pages.
 - `js/header-navigation.js` owns header scrolling, the mobile overlay, submenu
   toggles, action placement, and search reset behavior.
 - `js/landing-page-editor.js` seeds a landing introduction only for a new page

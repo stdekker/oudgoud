@@ -176,6 +176,10 @@ function haven_register_block_stylesheets() {
 			'handle' => 'oudgoud-navigation',
 			'file'   => 'css/navigation.css',
 		),
+		'core/archives'   => array(
+			'handle' => 'oudgoud-news-date-selector',
+			'file'   => 'css/news-date-selector.css',
+		),
 		'core/query'      => array(
 			'handle' => 'oudgoud-news-query',
 			'file'   => 'css/news-query.css',
@@ -211,6 +215,81 @@ function haven_register_block_stylesheets() {
 	}
 }
 add_action( 'init', 'haven_register_block_stylesheets' );
+
+/**
+ * Check whether parsed block data belongs to the news date selector.
+ *
+ * @param array $parsed_block Parsed block data.
+ * @return bool Whether this is the theme's Archives block.
+ */
+function haven_is_news_date_selector_block( $parsed_block ) {
+	if ( 'core/archives' !== $parsed_block['blockName'] ) {
+		return false;
+	}
+
+	$class_name = $parsed_block['attrs']['className'] ?? '';
+	$classes    = (array) preg_split( '/\s+/', trim( $class_name ) );
+
+	return in_array( 'news-date-selector', $classes, true );
+}
+
+/**
+ * Limit the news date selector to the main feed and monthly archives.
+ *
+ * The Archives block is present in the shared archive template so visitors can
+ * switch months. Returning an empty string here prevents both markup and the
+ * archive-count query on category, tag, author, and other archive pages.
+ *
+ * @param string|null $pre_render   Short-circuit value from an earlier filter.
+ * @param array       $parsed_block Parsed block data.
+ * @return string|null Empty markup outside supported views, otherwise unchanged.
+ */
+function haven_pre_render_news_date_selector( $pre_render, $parsed_block ) {
+	if ( ! haven_is_news_date_selector_block( $parsed_block ) ) {
+		return $pre_render;
+	}
+
+	$is_editor_request = is_admin() || ( defined( 'REST_REQUEST' ) && REST_REQUEST );
+	$is_news_page      = is_home() || is_page_template( 'template-news-page' );
+
+	if ( $is_editor_request || $is_news_page || is_month() ) {
+		return $pre_render;
+	}
+
+	return '';
+}
+add_filter( 'pre_render_block', 'haven_pre_render_news_date_selector', 10, 2 );
+
+/**
+ * Give the Core Archives dropdown a site-specific visible label.
+ *
+ * @param string $block_content Rendered Archives block markup.
+ * @param array  $parsed_block  Parsed block data.
+ * @return string Updated block markup.
+ */
+function haven_label_news_date_selector( $block_content, $parsed_block ) {
+	if ( ! haven_is_news_date_selector_block( $parsed_block ) ) {
+		return $block_content;
+	}
+
+	$processor = new WP_HTML_Tag_Processor( $block_content );
+
+	if (
+		$processor->next_tag(
+			array(
+				'tag_name'   => 'LABEL',
+				'class_name' => 'wp-block-archives__label',
+			)
+		) &&
+		$processor->next_token() &&
+		'#text' === $processor->get_token_name()
+	) {
+		$processor->set_modifiable_text( __( 'Oud nieuws', 'oudgoud' ) );
+	}
+
+	return $processor->get_updated_html();
+}
+add_filter( 'render_block_core/archives', 'haven_label_news_date_selector', 10, 2 );
 
 /**
  * Load the theme stylesheet on top of Global Styles.
