@@ -196,6 +196,10 @@ function haven_register_block_stylesheets() {
 			'handle' => 'oudgoud-comments',
 			'file'   => 'css/comments.css',
 		),
+		'osm-map/map'     => array(
+			'handle' => 'oudgoud-osm-map',
+			'file'   => 'css/osm-map.css',
+		),
 	);
 
 	foreach ( $block_stylesheets as $block_name => $stylesheet ) {

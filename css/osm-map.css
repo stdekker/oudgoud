@@ -1,0 +1,16 @@
+.entry-content > .wp-block-osm-map-map.alignfull {
+	width: 100cqi;
+	max-width: none;
+	margin-inline: calc(50% - 50cqi);
+}
+
+@media (min-width: 782px) {
+	.entry-content > .wp-block-osm-map-map.alignwide {
+		width: min(var(--wp--style--global--wide-size), calc(100cqi - 2rem));
+		max-width: none;
+		margin-inline: max(
+			calc((100% - var(--wp--style--global--wide-size)) / 2),
+			calc(50% - 50cqi + 1rem)
+		) !important;
+	}
+}
